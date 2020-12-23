@@ -1,0 +1,19 @@
+<!doctype html>
+
+<head>
+  <title>Foreign Language Companion</title>
+  <script src="{{ url_for('static', filename='js/index.js') }}" type="text/javascript" defer></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+  <form novalidate>
+    <input id="word" placeholder="Write the word here" />
+    <button class="btn btn-primary" id="search-submit" name="search-submit" type="button" value="Submit"
+      onclick="translate()">
+      Translate
+    </button>
+  </form>
+  <div class="container"></div>
+</body>

@@ -1,0 +1,9 @@
+{% from "bootstrap/form.html" import render_form, render_field, render_form_row %}
+
+<form class="search-form" novalidate></form>
+<select name="word">
+    {% for w in translations%}
+    <option value="{{w}}">{{w}}</option>
+    {% endfor %}
+</select>
+</form>
