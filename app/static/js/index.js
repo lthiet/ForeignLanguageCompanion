@@ -28,3 +28,8 @@ $.get("/vocabulary/search",
 function add() {
     window.alert('ok')
 }
+
+function playAudio(event) {
+    var audio = new Audio(event.target.value);
+    audio.play();
+}

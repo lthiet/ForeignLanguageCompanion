@@ -30,6 +30,4 @@ def vocabulary_translate():
 def vocabulary_search():
     word = request.args.get('word')
     result = search(word)
-    ipas = result['ipas']
-    word_usages = result['word_usages']
-    return render_template('vocabulary_search_result.html', ipas=ipas, word_usages=word_usages)
+    return render_template('vocabulary_search_result.html', **result)
