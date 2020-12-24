@@ -8,6 +8,11 @@ app.config['SECRET_KEY'] = 'abcd'
 bootstrap = Bootstrap(app)
 
 
+@app.route('/')
+def root():
+    return render_template('root.html')
+
+
 @app.route('/vocabulary/')
 def vocabulary():
     return render_template('vocabulary.html')
