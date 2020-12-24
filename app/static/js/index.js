@@ -29,7 +29,8 @@ function add() {
     window.alert('ok')
 }
 
-function playAudio(event) {
-    var audio = new Audio(event.target.value);
+function playAudio() {
+    select_item = $("#recording")
+    var audio = new Audio(select_item.val());
     audio.play();
 }

@@ -11,12 +11,12 @@
     {% endfor %}
 </select>
 <br>
-<select onchange="playAudio(event)" id="recording">
+<select onchange="playAudio()" id="recording">
     {% for e in recordings%}
     <option value="{{e}}">{{e}}</option>
     {% endfor %}
 </select>
- <button onclick="playAudioCurrent()"id=play>
+ <button onclick="playAudio()"id=play>
     PLAY
  </button>
 
