@@ -9,11 +9,12 @@
 <body>
 
   <form novalidate>
-    <input id="word" placeholder="Write the word here" />
+    <input id="word_src" placeholder="Write the word here" />
     <button class="btn btn-primary" id="search-submit" name="search-submit" type="button" value="Submit"
       onclick="translate()">
       Translate
     </button>
   </form>
-  <div class="container"></div>
+  <div class="form_container" id="result_translate"></div>
+  <div class="form_container" id="result_search"></div>
 </body>

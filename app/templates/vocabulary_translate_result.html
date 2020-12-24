@@ -1,9 +1,12 @@
-{% from "bootstrap/form.html" import render_form, render_field, render_form_row %}
-
 <form class="search-form" novalidate></form>
-<select name="word">
+<select id="word_dst">
     {% for w in translations%}
-    <option value="{{w}}">{{w}}</option>
+    <option value="{{w[1]}}">{{w}}</option>
     {% endfor %}
 </select>
+ <button class="btn btn-primary" id="search-submit" name="search-submit" type="button" value="Submit"
+      onclick="search()">
+      Search
+    </button>
+
 </form>

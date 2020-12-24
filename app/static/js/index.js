@@ -1,11 +1,30 @@
+function clearAll() {
+    $(".form_container").html('');
+}
+
 function translate() {
-    console.log('hi')
+    clearAll()
     $.get("/vocabulary/translate",
         {
-            word: $("#word").val()
+            word: $("#word_src").val()
         },
         function (data) {
-            $(".container").append(data);
+            $("#result_translate").html(data);
         }
     );
+}
+
+function search() {
+$.get("/vocabulary/search",
+        {
+            word: $("#word_dst").val()
+        },
+        function (data) {
+            $("#result_search").html(data);
+        }
+    );
+}
+
+function add() {
+    window.alert('ok')
 }

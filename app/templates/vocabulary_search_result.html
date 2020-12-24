@@ -1,0 +1,16 @@
+<form novalidate></form>
+<select id="ipa">
+    {% for e in ipas%}
+    <option value="{{e}}">{{e}}</option>
+    {% endfor %}
+</select>
+<select id="word_usage">
+    {% for e in word_usages%}
+    <option value="{{e}}">{{e}}</option>
+    {% endfor %}
+</select>
+ <button class="btn btn-primary" id="search-submit" name="search-submit" type="button" value="Submit"
+      onclick="add()">
+      Add
+    </button>
+</form>
