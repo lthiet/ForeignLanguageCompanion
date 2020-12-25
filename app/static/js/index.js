@@ -26,7 +26,14 @@ $.get("/vocabulary/search",
 }
 
 function add() {
-    window.alert('ok')
+$.get("/vocabulary/add",
+        {
+        },
+        function (data) {
+            $("#result_add").html(data);
+        }
+    );
+
 }
 
 function playAudio() {

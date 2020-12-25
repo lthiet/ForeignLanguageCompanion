@@ -5,7 +5,7 @@ from flask import request
 from flask import send_file
 from services.translate import translate_word
 from services.search import search
-from services.image import image
+from services.add import add
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'abcd'
 bootstrap = Bootstrap(app)
@@ -36,10 +36,14 @@ def vocabulary_search():
     word = word.replace(',', '')
 
     result = search(word)
-    image(word)
     return render_template('vocabulary_search_result.html', **result)
 
 
 @app.route('/vocabulary/image/<word>/<i>')
 def vocabulary_image(word, i):
     return send_file(f"data/images/{word}/Image_{i}.jpg", mimetype='image/jpg')
+
+
+@app.route('/vocabulary/add')
+def vocabulary_add():
+    return str(add())

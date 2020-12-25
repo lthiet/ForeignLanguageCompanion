@@ -1,17 +1,22 @@
 from wiktionaryparser import WiktionaryParser
 from urllib.request import urlopen
-import tempfile
 import json
 import os
 from pathlib import Path
+from bing_image_downloader import downloader
+
+
+def download_image(word):
+    downloader.download(word, limit=5,  output_dir='app/data/images',
+                        adult_filter_off=True, force_replace=False, timeout=60)
 
 
 def download_audio(recording):
-    tmp_dir = os.path.join(os.getcwd(), "data/tmp")
+    tmp_dir = os.path.join(os.getcwd(), "app/data/audio")
     if not os.path.exists(tmp_dir):
         os.mkdir(tmp_dir)
-
-    with tempfile.NamedTemporaryFile(mode="wb", delete=False, suffix=".ogg", dir=tmp_dir) as f:
+    path = os.path.join(tmp_dir, recording.rsplit('/', 1)[-1])
+    with open(path, mode="wb") as f:
         f.write(urlopen(recording).read())
         return f.name
 
@@ -27,4 +32,6 @@ def search(word):
         "word_usages": [e["partOfSpeech"] + ": " + e["text"][0] for e in result["definitions"]],
         "recordings": ["https:" + e for e in result['pronunciations']['audio']] if has_recording else ''
     }
+    download_image(word)
+    download_audio(result['recordings'][0])
     return result
