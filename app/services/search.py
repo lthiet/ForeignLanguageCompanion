@@ -19,10 +19,12 @@ def download_audio(recording):
 def search(word):
     parser = WiktionaryParser()
     result = parser.fetch(word, 'german')[0]
+    has_ipa = len(result['pronunciations']['text']) > 0
+    has_recording = len(result['pronunciations']['audio']) > 0
     result = {
         "word": word,
-        "ipas": [e.replace(',', '') for e in result["pronunciations"]["text"][0].split(' ')[1:]],
+        "ipas": [e.replace(',', '') for e in result["pronunciations"]["text"][0].split(' ')[1:]] if has_ipa else '',
         "word_usages": [e["partOfSpeech"] + ": " + e["text"][0] for e in result["definitions"]],
-        "recordings": ["https:" + e for e in result['pronunciations']['audio']]
+        "recordings": ["https:" + e for e in result['pronunciations']['audio']] if has_recording else ''
     }
     return result

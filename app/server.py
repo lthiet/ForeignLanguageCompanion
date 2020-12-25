@@ -31,6 +31,10 @@ def vocabulary_translate():
 @app.route('/vocabulary/search')
 def vocabulary_search():
     word = request.args.get('word')
+
+    # TODO: some words have commas in them, not sure why
+    word = word.replace(',', '')
+
     result = search(word)
     image(word)
     return render_template('vocabulary_search_result.html', **result)
