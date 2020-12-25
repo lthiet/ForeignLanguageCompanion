@@ -3,6 +3,8 @@ from flask import Flask
 from flask import render_template
 from flask import request
 from flask import send_file
+import glob
+import os
 from services.translate import translate_word
 from services.search import search
 from services.add import add
@@ -43,7 +45,10 @@ def vocabulary_search():
 
 @app.route('/vocabulary/image/<word>/<i>')
 def vocabulary_image(word, i):
-    return send_file(f"data/images/{word}/Image_{i}.jpg", mimetype='image/jpg')
+    path = os.path.join(os.getcwd(), f'app/data/images/{word}/')
+    for infile in glob.glob(os.path.join(path, f'Image_{i}.*')):
+        # TODO: there should be only one
+        return send_file(infile)
 
 
 @app.route('/vocabulary/add')
