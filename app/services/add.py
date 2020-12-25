@@ -1,4 +1,6 @@
 from .anki import invoke
+import os
+import shutil
 
 
 def add(**params):
@@ -31,4 +33,9 @@ def add(**params):
     }
 
     note_id = invoke("addNote", **anki)
+
+    # Delete file used
+    path = os.path.join(os.getcwd(), 'app/data')
+    shutil.rmtree(os.path.join(path, 'audio'))
+    shutil.rmtree(os.path.join(path, 'images'))
     return str(note_id)
