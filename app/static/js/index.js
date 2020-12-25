@@ -34,7 +34,8 @@ $.get("/vocabulary/add",
             recording: $("#recording").val(),
             images : $(".selected").map(function() {
                 return this.src;
-            }).get()
+            }).get(),
+            deck : $("#deck").val()
         },
         function (data) {
             $("#result_add").html(data);

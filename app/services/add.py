@@ -4,7 +4,7 @@ from .anki import invoke
 def add(**params):
     anki = {
         "note": {
-            "deckName": "German",
+            "deckName": params['deck'],
             "modelName": "2. Picture Words",
             "fields": {
                 "Word": params['word'],
