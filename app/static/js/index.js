@@ -39,6 +39,7 @@ $.get("/vocabulary/add",
         },
         function (data) {
             $("#result_add").html(data);
+            clearAll();
         }
     );
 
