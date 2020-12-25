@@ -34,3 +34,14 @@ function playAudio() {
     var audio = new Audio(select_item.val());
     audio.play();
 }
+
+function selectImage(event) {
+    image = event.target
+    if (image.classList.contains('selected')) {
+        event.target.classList.remove('selected');
+        event.target.classList.add('unselected');
+    } else {
+        event.target.classList.add('selected');
+        event.target.classList.remove('unselected');
+    }
+}

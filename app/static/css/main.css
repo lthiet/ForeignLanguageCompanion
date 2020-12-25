@@ -1,0 +1,17 @@
+img {
+  width: auto;
+  height: auto;
+  max-width: 200px;
+  max-height: 200px;
+  border: 5px solid #555;
+}
+
+.selected {
+  border-width: 5px;
+  border-color: green;
+}
+
+.unselected {
+  border-width: 5px;
+  border-color: red;
+}
