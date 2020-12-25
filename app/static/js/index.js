@@ -28,6 +28,13 @@ $.get("/vocabulary/search",
 function add() {
 $.get("/vocabulary/add",
         {
+            word: $("#word_dst").val(),
+            ipa: $("#ipa").val(),
+            word_usage: $("#word_usage").val(),
+            recording: $("#recording").val(),
+            images : $(".selected").map(function() {
+                return this.src;
+            }).get()
         },
         function (data) {
             $("#result_add").html(data);

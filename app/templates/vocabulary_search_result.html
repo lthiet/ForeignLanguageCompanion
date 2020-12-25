@@ -1,16 +1,19 @@
 <form novalidate></form>
+<label for="ipa">IPA</label>
 <select id="ipa">
     {% for e in ipas%}
     <option value="{{e}}">{{e}}</option>
     {% endfor %}
 </select>
 <br>
+<label for="word_usage">Word Usage</label>
 <select id="word_usage">
     {% for e in word_usages%}
     <option value="{{e}}">{{e}}</option>
     {% endfor %}
 </select>
 <br>
+<label>Recording</label>
 <select onchange="playAudio()" id="recording">
     {% for e in recordings%}
     <option value="{{e}}">{{e}}</option>
@@ -21,7 +24,7 @@
  </button>
 
 <br>
-
+<label for="image">Image</label>
 <div id="image">
     {% for i in range(1,6) %}
     <img class="unselected" onclick="selectImage(event)" src="image/{{word}}/{{i}}">

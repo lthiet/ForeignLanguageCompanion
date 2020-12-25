@@ -10,6 +10,15 @@
 <body>
 
   <form novalidate>
+    <label>Deck:</label>
+    <select id=deck>
+      {% for d in decks%}
+      <option value="{{d}}">{{d}}</option>
+      {% endfor %}
+
+    </select>
+    <br>
+    <label>Word (in English)</label>
     <input id="word_src" placeholder="Write the word here" />
     <br>
     <button class="btn btn-primary" id="search-submit" name="search-submit" type="button" value="Submit"

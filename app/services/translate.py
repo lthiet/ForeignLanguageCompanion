@@ -18,7 +18,7 @@ def translate_word(word, specification=None):
         for d in defs:
             definition = d.text
             translation = d.parent.parent.find_all(class_="dtrans")[0].text
-            if category == 'noun':
+            if category == 'noun' or category == 'noun plural':
                 translation = translation.split(' ')[1]
 
             if category == specification or not specification in {'noun', 'adjective', 'verb'}:

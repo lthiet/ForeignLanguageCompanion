@@ -1,4 +1,7 @@
 <form class="search-form" novalidate></form>
+<label>
+    Word (in target language)
+</label>
 <select id="word_dst">
     {% for w in translations%}
     <option value="{{w[1]}}">{{w}}</option>

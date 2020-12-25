@@ -6,6 +6,7 @@ from flask import send_file
 from services.translate import translate_word
 from services.search import search
 from services.add import add
+from services.anki import invoke
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'abcd'
 bootstrap = Bootstrap(app)
@@ -18,7 +19,8 @@ def root():
 
 @app.route('/vocabulary/')
 def vocabulary():
-    return render_template('vocabulary.html')
+    decks = invoke("deckNames")
+    return render_template('vocabulary.html', decks=decks)
 
 
 @app.route('/vocabulary/translate')
@@ -33,7 +35,7 @@ def vocabulary_search():
     word = request.args.get('word')
 
     # TODO: some words have commas in them, not sure why
-    word = word.replace(',', '')
+    word = word.replace(',', '').replace(';', '')
 
     result = search(word)
     return render_template('vocabulary_search_result.html', **result)
@@ -46,4 +48,7 @@ def vocabulary_image(word, i):
 
 @app.route('/vocabulary/add')
 def vocabulary_add():
-    return str(add())
+    params = dict(request.args)
+    params['images'] = request.args.getlist('images[]')
+    params.pop('images[]', None)
+    return add(**params)

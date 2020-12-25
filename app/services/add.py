@@ -1,41 +1,34 @@
-import json
-import urllib.request
+from .anki import invoke
 
 
-def request(action, **params):
-    return {'action': action, 'params': params, 'version': 6}
-
-
-def invoke(action, **params):
-    requestJson = json.dumps(request(action, **params)).encode('utf-8')
-    response = json.load(urllib.request.urlopen(
-        urllib.request.Request('http://localhost:8765', requestJson)))
-    if len(response) != 2:
-        raise Exception('response has an unexpected number of fields')
-    if 'error' not in response:
-        raise Exception('response is missing required error field')
-    if 'result' not in response:
-        raise Exception('response is missing required result field')
-    if response['error'] is not None:
-        raise Exception(response['error'])
-    return response['result']
-
-
-def add():
-    params = {
+def add(**params):
+    anki = {
         "note": {
             "deckName": "German",
             "modelName": "2. Picture Words",
             "fields": {
-                "Word": "truc",
-                "Picture": "bidule",
-                "Gender, Personal Connection, Extra Info (Back side)": "machin",
-                "Pronunciation (Recording and/or IPA)": "bonga",
+                "Word": params['word'],
+                "Gender, Personal Connection, Extra Info (Back side)": params['word_usage'],
+                "Pronunciation (Recording and/or IPA)": params['ipa'],
                 "Test Spelling? (y = yes, blank = no)": ""
             },
-            "tags": []
+            "tags": [],
+            "audio": [{
+                "url": params['recording'],
+                "filename": params['recording'].strip('/')[-1],
+                "fields": [
+                    "Pronunciation (Recording and/or IPA)"
+                ]
+            }],
+            "picture": [{
+                "url": url,
+                "filename": url.strip('/')[-1],
+                "fields": [
+                    "Picture"
+                ]
+            } for url in params['images']]
         }
     }
 
-    note_id = invoke("addNote", **params)
-    return note_id
+    note_id = invoke("addNote", **anki)
+    return str(note_id)
