@@ -93,3 +93,20 @@ function pronunciate() {
         }
     );
 }
+
+function word_list() {
+    $.get("/vocabulary/word_list",
+        {
+            word_list: $("#word_list").val()
+        },
+        function (data) {
+            $("#result_word_list").html(data);
+        }
+    );
+}
+
+function replace_word(event) {
+    word = event.target.id;
+    $("#word_src").val(word);
+    $("#" + word).remove();
+}

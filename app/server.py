@@ -5,6 +5,7 @@ from flask import request
 from flask import send_file
 import glob
 import os
+import pandas as pd
 from services.translate import translate_word
 from services.search import search
 from services.add import add
@@ -22,7 +23,10 @@ def root():
 @app.route('/vocabulary/')
 def vocabulary():
     decks = invoke("deckNames")
-    return render_template('vocabulary.html', decks=decks)
+    path = os.path.join(os.getcwd(), 'app/data/word_list')
+    word_list = [f for f in os.listdir(
+        path) if os.path.isfile(os.path.join(path, f))]
+    return render_template('vocabulary.html', decks=decks, word_list=word_list)
 
 
 @app.route('/vocabulary/translate')
@@ -40,6 +44,7 @@ def vocabulary_search():
     word = word.replace(',', '').replace(';', '')
 
     result = search(word, kind='vocabulary')
+
     return render_template('search_result.html', kind="vocabulary", **result)
 
 
@@ -57,6 +62,14 @@ def vocabulary_add():
     params['images'] = request.args.getlist('images[]')
     params.pop('images[]', None)
     return add('vocabulary', **params)
+
+
+@app.route('/vocabulary/word_list')
+def vocabulary_word_list():
+    word_list = request.args['word_list']
+    words = pd.read_csv(os.path.join(
+        os.getcwd(), 'app/data/word_list', word_list), header=None)[0].to_list()
+    return render_template('word_list.html', words=words)
 
 
 @app.route('/pronunciation/')

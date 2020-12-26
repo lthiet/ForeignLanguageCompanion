@@ -4,11 +4,15 @@
   <title>Foreign Language Companion</title>
   <script src="{{ url_for('static', filename='js/index.js') }}" type="text/javascript" defer></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" type="text/css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}" type="text/css">
 </head>
 
 <body>
 <a href="/">Back</a>
+<div id=wrapper>
+
+<div id="left">
+
   <form novalidate>
     <label>Deck:</label>
     <select id=deck>
@@ -29,4 +33,20 @@
   <div class="form_container" id="result_translate"></div>
   <div class="form_container" id="result_search"></div>
   <div class="form_container" id="result_add"></div>
+</div>
+<div id="right">
+
+<select id="word_list">
+{% for e in word_list%}
+      <option value="{{e}}">{{e}}</option>
+{% endfor %}
+</select>
+<br>
+ <button class="btn btn-primary" id="search-submit" name="search-submit" type="button" value="Submit"
+      onclick="word_list()">
+      Load word list
+</button>
+<div id="result_word_list"></div>
+</div>
+</div>
 </body>
