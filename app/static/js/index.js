@@ -95,7 +95,8 @@ function pronunciate() {
   $.get(
     "/pronunciation/search",
     {
-      word: $("#word").val(),
+      word: $("#word_dst").val(),
+      target: $("#target").val(),
     },
     function (data) {
       $("#result_search").html(data);

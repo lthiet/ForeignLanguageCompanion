@@ -17,8 +17,15 @@
       {% endfor %}
     </select>
     <br>
+    <label for="target">Target language:</label>
+    <select id="target">
+      {% for e in lang_code%}
+      <option value="{{e['code']}}">{{e['name']}}</option>
+      {% endfor %}
+    </select>
+    <br>
     <label>Word (in target language)</label>
-    <input id="word" placeholder="Write the word here" />
+    <input id="word_dst" placeholder="Write the word here" />
     <br>
     <label>Spelling</label>
     <input id="spelling" placeholder="Write the letters or group of letters to be focused here" />

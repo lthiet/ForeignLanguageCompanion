@@ -82,14 +82,18 @@ def vocabulary_word_list():
 
 @app.route('/pronunciation/')
 def pronunciation():
-    decks = invoke("deckNames")
-    return render_template('pronunciation.html', decks=decks)
+    params = {
+        "decks": invoke("deckNames"),
+        "lang_code": lang_code
+    }
+    return render_template('pronunciation.html', **params)
 
 
 @app.route('/pronunciation/search')
 def pronunciation_search():
     word = request.args.get('word')
-    result = search(word, kind="pronunciation")
+    target = request.args.get('target')
+    result = search(word, target, kind="pronunciation")
     return render_template('search_result.html', kind="pronunciation", **result)
 
 
