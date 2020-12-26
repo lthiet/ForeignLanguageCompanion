@@ -1,19 +1,172 @@
 {
-  "normalizedSource": "wasp",
-  "displaySource": "wasp",
+  "normalizedSource": "clean",
+  "displaySource": "clean",
   "translations": [
     {
-      "normalizedTarget": "wespe",
-      "displayTarget": "wespe",
-      "posTag": "NOUN",
-      "confidence": 1.0,
+      "normalizedTarget": "sauber",
+      "displayTarget": "sauber",
+      "posTag": "OTHER",
+      "confidence": 0.5375,
       "prefixWord": "",
       "backTranslations": [
         {
-          "normalizedText": "wasp",
-          "displayText": "wasp",
+          "normalizedText": "clean",
+          "displayText": "clean",
+          "numExamples": 1,
+          "frequencyCount": 28617
+        },
+        {
+          "normalizedText": "nice",
+          "displayText": "nice",
+          "numExamples": 1,
+          "frequencyCount": 1606
+        },
+        {
+          "normalizedText": "neatly",
+          "displayText": "neatly",
+          "numExamples": 1,
+          "frequencyCount": 805
+        }
+      ]
+    },
+    {
+      "normalizedTarget": "reinigen",
+      "displayTarget": "reinigen",
+      "posTag": "OTHER",
+      "confidence": 0.3511,
+      "prefixWord": "",
+      "backTranslations": [
+        {
+          "normalizedText": "clean",
+          "displayText": "clean",
+          "numExamples": 1,
+          "frequencyCount": 18693
+        },
+        {
+          "normalizedText": "purify",
+          "displayText": "purify",
+          "numExamples": 1,
+          "frequencyCount": 1068
+        },
+        {
+          "normalizedText": "sponge",
+          "displayText": "sponge",
           "numExamples": 0,
-          "frequencyCount": 521
+          "frequencyCount": 234
+        },
+        {
+          "normalizedText": "purge",
+          "displayText": "purge",
+          "numExamples": 0,
+          "frequencyCount": 167
+        }
+      ]
+    },
+    {
+      "normalizedTarget": "reinigung",
+      "displayTarget": "reinigung",
+      "posTag": "NOUN",
+      "confidence": 0.062,
+      "prefixWord": "",
+      "backTranslations": [
+        {
+          "normalizedText": "clean",
+          "displayText": "clean",
+          "numExamples": 1,
+          "frequencyCount": 3301
+        },
+        {
+          "normalizedText": "purification",
+          "displayText": "purification",
+          "numExamples": 1,
+          "frequencyCount": 1880
+        },
+        {
+          "normalizedText": "purge",
+          "displayText": "purge",
+          "numExamples": 0,
+          "frequencyCount": 33
+        }
+      ]
+    },
+    {
+      "normalizedTarget": "waschen",
+      "displayTarget": "waschen",
+      "posTag": "VERB",
+      "confidence": 0.0185,
+      "prefixWord": "",
+      "backTranslations": [
+        {
+          "normalizedText": "wash",
+          "displayText": "wash",
+          "numExamples": 1,
+          "frequencyCount": 11226
+        },
+        {
+          "normalizedText": "clean",
+          "displayText": "clean",
+          "numExamples": 0,
+          "frequencyCount": 987
+        },
+        {
+          "normalizedText": "launder",
+          "displayText": "launder",
+          "numExamples": 0,
+          "frequencyCount": 613
+        },
+        {
+          "normalizedText": "shampoo",
+          "displayText": "shampoo",
+          "numExamples": 0,
+          "frequencyCount": 324
+        }
+      ]
+    },
+    {
+      "normalizedTarget": "frisch",
+      "displayTarget": "frisch",
+      "posTag": "ADJ",
+      "confidence": 0.0161,
+      "prefixWord": "",
+      "backTranslations": [
+        {
+          "normalizedText": "freshly",
+          "displayText": "freshly",
+          "numExamples": 1,
+          "frequencyCount": 12271
+        },
+        {
+          "normalizedText": "sweet",
+          "displayText": "sweet",
+          "numExamples": 0,
+          "frequencyCount": 1023
+        },
+        {
+          "normalizedText": "clean",
+          "displayText": "clean",
+          "numExamples": 0,
+          "frequencyCount": 858
+        }
+      ]
+    },
+    {
+      "normalizedTarget": "putzen",
+      "displayTarget": "putzen",
+      "posTag": "VERB",
+      "confidence": 0.0148,
+      "prefixWord": "",
+      "backTranslations": [
+        {
+          "normalizedText": "clean",
+          "displayText": "clean",
+          "numExamples": 0,
+          "frequencyCount": 786
+        },
+        {
+          "normalizedText": "preen",
+          "displayText": "preen",
+          "numExamples": 0,
+          "frequencyCount": 7
         }
       ]
     }

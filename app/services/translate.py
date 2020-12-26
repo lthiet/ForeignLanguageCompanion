@@ -11,6 +11,8 @@ def language_specific_processing(entry, lang=None):
         if entry['position'] == 'NOUN':
             entry["word"] = entry["word"][0].upper() + entry["word"][1:]
             return entry
+        else:
+            return entry
     else:
         return entry
 
