@@ -60,7 +60,13 @@ The process goes like this :
 WIP
 
 ## Pronunciation
-WIP
+The pronunciation part of this project allows you to add words from the target language and create card to focus on specific words or group of words
+The process goes like this :
+1. Choose the Anki Deck that will receive the new cards
+1. Type your word in the target language
+3. Choose related info such as IPA, Recording, or Images.
+4. Click add and they will arrive into your Anki Deck
+
 ## Sentences
 WIP
 
