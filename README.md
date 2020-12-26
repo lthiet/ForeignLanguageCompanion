@@ -57,7 +57,11 @@ The process goes like this :
 
 ### Bulk Vocabulary
 
-WIP
+You can also load a .csv file that contains a list of word that you wish to learn. For my personal use, I categorized them by semantic category (animals, clothing, etc.)
+On the right panel, you can :
+1. Select a word list
+2. Then a bunch of buttons will apear, click one of them and it will automatically be written in the input on the left
+3. The button disappears after you clicked it
 
 ## Pronunciation
 The pronunciation part of this project allows you to add words from the target language and create card to focus on specific words or group of words
