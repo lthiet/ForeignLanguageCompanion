@@ -10,6 +10,7 @@ from services.translate import translate_word
 from services.search import search
 from services.add import add
 from services.anki import invoke
+from services.image import download_image
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'abcd'
 bootstrap = Bootstrap(app)
@@ -91,3 +92,16 @@ def pronunciation_add():
     params['images'] = request.args.getlist('images[]')
     params.pop('images[]', None)
     return add('pronunciation', **params)
+
+
+@app.route("/image_search")
+def image_search():
+    word = request.args.get('word')
+    offset = int(request.args.get('offset'))
+    download_image(word, offset=offset)
+    params = {
+        "word": word,
+        "n": 3,
+        "offset": offset
+    }
+    return render_template('image_search_result.html', **params)

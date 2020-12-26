@@ -27,10 +27,8 @@
 
 <br>
 <label for="image">Image</label>
+<button onclick="load_image()">Load more images (by 3)</button>
 <div id="image">
-    {% for i in range(1,6) %}
-    <img class="unselected" onclick="selectImage(event)" src="/image/{{word}}/{{i}}">
-    {% endfor %}
 </div>
  <button class="btn btn-primary" id="search-submit" name="search-submit" type="button" value="Submit"
       onclick="add_{{kind}}()">
