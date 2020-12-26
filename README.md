@@ -30,7 +30,15 @@ pip install -r requirements.txt
 
 ## Step-by-step
 1. Open Anki
-2. Run this
+2. Download the repo
+```
+git clone https://github.com/truvaking/ForeignLanguageCompanion.git
+```
+4. Go into the repo root directory
+```
+cd ForeignLanguageCompanion
+```
+5. Run this
 ```shell
 chmod +x ./start.sh
 ./start.sh
