@@ -74,6 +74,10 @@ The process goes like this :
 ## Sentences
 WIP
 
+# API use for Advanced Users
+
+WIP
+
 # Supported Languages
 
 1. German

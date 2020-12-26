@@ -1,0 +1,21 @@
+{
+  "normalizedSource": "wasp",
+  "displaySource": "wasp",
+  "translations": [
+    {
+      "normalizedTarget": "wespe",
+      "displayTarget": "wespe",
+      "posTag": "NOUN",
+      "confidence": 1.0,
+      "prefixWord": "",
+      "backTranslations": [
+        {
+          "normalizedText": "wasp",
+          "displayText": "wasp",
+          "numExamples": 0,
+          "frequencyCount": 521
+        }
+      ]
+    }
+  ]
+}

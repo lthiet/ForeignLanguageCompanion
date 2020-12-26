@@ -1,3 +1,6 @@
+*.ini
+
+
 app/data/images/
 app/data/audio/
 
