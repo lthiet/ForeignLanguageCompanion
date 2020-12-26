@@ -4,6 +4,7 @@
 </label>
 <select id="word_dst">
     {% for w in translations%}
+    <!-- TODO: find a way to display the original name to be cool -->
     <option value="{{w['word']}}">{{w['word']}} / {{w['position']}} / {{w['other']}}</option>
     {% endfor %}
 </select>

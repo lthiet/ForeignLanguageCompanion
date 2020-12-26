@@ -9,9 +9,9 @@ thought that other features could be implemented as well.
 So far, the project was only tested on Linux and MAC. 
 
 1. Word cards
+2. Pronunciation cards
 
 ## Features to come
-2. Pronunciation cards
 3. Sentence cards
 
 # Tutorial
@@ -76,8 +76,17 @@ WIP
 
 # API use for Advanced Users
 
+You can provide your API keys from the Microsoft Azure Cloud services to improve some results and/or their availability.
+
 WIP
+
+# Issue
+
+This is still a buggy project. Please let me know of any issues in the issues section. You should expect a lot of problem, especially if you do not have API keys.
+You should also expect some rare cases where there is no bug but the result is still not what you expect. This is due to the undeterministic
+nature of natural language. Personally, I found these cases to be rare enough to not be bothered by it.
 
 # Supported Languages
 
-1. German
+Many languages are supported, but I don't really know which one actually is. It boils down to the intersection of languages supported by Microsoft's Translator and Wiktionary.
+At the current state, you should expect languages with non-latin alphabet to work relatively worse than languages with latin alphabet. 

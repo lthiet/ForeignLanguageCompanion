@@ -11,6 +11,7 @@ from services.search import search
 from services.add import add
 from services.anki import invoke
 from services.image import download_image
+from services.lang import lang_code
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'abcd'
 bootstrap = Bootstrap(app)
@@ -27,24 +28,30 @@ def vocabulary():
     path = os.path.join(os.getcwd(), 'app/data/word_list')
     word_list = [f for f in os.listdir(
         path) if os.path.isfile(os.path.join(path, f))]
-    return render_template('vocabulary.html', decks=decks, word_list=word_list)
+    params = {
+        "decks": decks,
+        "word_list": word_list,
+        "lang_code": lang_code}
+    return render_template('vocabulary.html', **params)
 
 
 @app.route('/vocabulary/translate')
 def vocabulary_translate():
     word = request.args.get('word')
-    translations = translate_word(word)
+    target = request.args.get('target')
+    translations = translate_word(word, target)
     return render_template('vocabulary_translate_result.html', translations=translations)
 
 
 @app.route('/vocabulary/search')
 def vocabulary_search():
     word = request.args.get('word')
+    target = request.args.get('target')
 
     # TODO: some words have commas in them, not sure why
     word = word.replace(',', '').replace(';', '')
 
-    result = search(word, kind='vocabulary')
+    result = search(word, target, kind='vocabulary')
 
     return render_template('search_result.html', kind="vocabulary", **result)
 
@@ -98,7 +105,8 @@ def pronunciation_add():
 def image_search():
     word = request.args.get('word')
     offset = int(request.args.get('offset'))
-    download_image(word, offset=offset)
+    target = request.args.get('target')
+    download_image(word, target=target, offset=offset)
     params = {
         "word": word,
         "n": 3,

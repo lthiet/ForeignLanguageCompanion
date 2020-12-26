@@ -22,6 +22,13 @@
 
     </select>
     <br>
+    <label for="target">Target language:</label>
+    <select id="target">
+      {% for e in lang_code%}
+      <option value="{{e['code']}}">{{e['name']}}</option>
+      {% endfor %}
+    </select>
+    <br>
     <label>Word (in English)</label>
     <input id="word_src" placeholder="Write the word here" />
     <br>

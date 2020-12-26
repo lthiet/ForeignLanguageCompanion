@@ -13,7 +13,7 @@ except:
     has_api = False
 
 
-def download_image(word, offset=0, n=3):
+def download_image(word, target=None, offset=0, n=3):
     if has_api:
         key = cfg['image']['key']
         location = cfg['image']['location']
@@ -24,8 +24,7 @@ def download_image(word, offset=0, n=3):
         params = {"q": word,
                   "license": "All",
                   "offset": offset,
-                  "cc": "DE",
-                  "setLang": "de",
+                  "setLang": target,
                   "count": n,
                   }
         response = requests.get(url, headers=headers, params=params)

@@ -8,6 +8,7 @@ function translate() {
     "/vocabulary/translate",
     {
       word: $("#word_src").val(),
+      target: $("#target").val(),
     },
     function (data) {
       $("#result_translate").html(data);
@@ -20,6 +21,7 @@ function search() {
     "/vocabulary/search",
     {
       word: $("#word_dst").val(),
+      target: $("#target").val(),
     },
     function (data) {
       $("#result_search").html(data);
@@ -125,6 +127,7 @@ function load_image() {
     "/image_search",
     {
       word: $("#word_dst").val(),
+      target: $("#target").val(),
       offset: offset,
     },
     function (data) {

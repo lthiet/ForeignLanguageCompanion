@@ -3,7 +3,6 @@ import requests
 import json
 from bs4 import BeautifulSoup
 from .config import cfg
-lang = 'de'
 
 
 def language_specific_processing(entry, lang=None):
@@ -17,7 +16,7 @@ def language_specific_processing(entry, lang=None):
         return entry
 
 
-def translate_word(word, specification=None):
+def translate_word(word, target, specification=None):
     has_api = True
     try:
         # user has a API key, use this service instead
@@ -29,7 +28,7 @@ def translate_word(word, specification=None):
     if has_api:
         key = cfg['translator']['key']
         location = cfg['translator']['location']
-        url = f'https://api.cognitive.microsofttranslator.com/dictionary/lookup?api-version=3.0&from=en&to={lang}'
+        url = f'https://api.cognitive.microsofttranslator.com/dictionary/lookup?api-version=3.0&from=en&to={target}'
         headers = {
             'Ocp-Apim-Subscription-Key': key,
             'Ocp-Apim-Subscription-Region': location,
@@ -43,7 +42,7 @@ def translate_word(word, specification=None):
         l = [language_specific_processing({
             "position": e["posTag"],
             "word": e["displayTarget"],
-            "other": "confidence : " + str(e["confidence"])}, lang=lang)
+            "other": "confidence : " + str(e["confidence"])}, lang=target)
             for e in response["translations"]]
         return l
     else:
