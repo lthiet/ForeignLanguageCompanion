@@ -4,6 +4,8 @@ This project aims to be a automated companion to your language learning endeavou
 [FluentForeverVocabBuilder](https://github.com/cofinley/FluentForeverVocabBuilder). I decided to make my own project as I was too lazy to work around a forked code and
 thought that other features could be implemented as well.
 
+![This is the demo](demo.gif)
+
 ## Implemented Features
 
 So far, the project was only tested on Linux and MAC. 
