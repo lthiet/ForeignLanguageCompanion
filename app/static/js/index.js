@@ -25,12 +25,32 @@ $.get("/vocabulary/search",
     );
 }
 
-function add() {
+function add_vocabulary() {
 $.get("/vocabulary/add",
         {
             word: $("#word_dst").val(),
             ipa: $("#ipa").val(),
             word_usage: $("#word_usage").val(),
+            recording: $("#recording").val(),
+            images : $(".selected").map(function() {
+                return this.src;
+            }).get(),
+            deck : $("#deck").val()
+        },
+        function (data) {
+            $("#result_add").html(data);
+            clearAll();
+        }
+    );
+
+}
+
+function add_pronunciation() {
+$.get("/pronunciation/add",
+        {
+            word: $("#word").val(),
+            spelling: $("#spelling").val(),
+            ipa: $("#ipa").val(),
             recording: $("#recording").val(),
             images : $(".selected").map(function() {
                 return this.src;
@@ -60,4 +80,16 @@ function selectImage(event) {
         event.target.classList.add('selected');
         event.target.classList.remove('unselected');
     }
+}
+
+function pronunciate() {
+    clearAll()
+    $.get("/pronunciation/search",
+        {
+            word: $("#word").val()
+        },
+        function (data) {
+            $("#result_search").html(data);
+        }
+    );
 }

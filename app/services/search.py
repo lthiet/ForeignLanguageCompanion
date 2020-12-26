@@ -21,17 +21,21 @@ def download_audio(recording):
         return f.name
 
 
-def search(word):
+def search(word, kind='vocabulary'):
     parser = WiktionaryParser()
     result = parser.fetch(word, 'german')[0]
     has_ipa = len(result['pronunciations']['text']) > 0
     has_recording = len(result['pronunciations']['audio']) > 0
-    result = {
+    answer = {
         "word": word,
         "ipas": [e.replace(',', '') for e in result["pronunciations"]["text"][0].split(' ')[1:]] if has_ipa else '',
-        "word_usages": [e["partOfSpeech"] + ": " + e["text"][0] for e in result["definitions"]],
         "recordings": ["https:" + e for e in result['pronunciations']['audio']] if has_recording else ''
     }
+    if kind == 'vocabulary':
+        answer['word_usages'] = [e["partOfSpeech"] + ": " + e["text"][0]
+                                 for e in result["definitions"]],
+
     download_image(word)
-    download_audio(result['recordings'][0])
-    return result
+    if has_recording:
+        download_audio(answer['recordings'][0])
+    return answer

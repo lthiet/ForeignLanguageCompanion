@@ -39,11 +39,11 @@ def vocabulary_search():
     # TODO: some words have commas in them, not sure why
     word = word.replace(',', '').replace(';', '')
 
-    result = search(word)
-    return render_template('vocabulary_search_result.html', **result)
+    result = search(word, kind='vocabulary')
+    return render_template('search_result.html', kind="vocabulary", **result)
 
 
-@app.route('/vocabulary/image/<word>/<i>')
+@app.route('/image/<word>/<i>')
 def vocabulary_image(word, i):
     path = os.path.join(os.getcwd(), f'app/data/images/{word}/')
     for infile in glob.glob(os.path.join(path, f'Image_{i}.*')):
@@ -56,4 +56,25 @@ def vocabulary_add():
     params = dict(request.args)
     params['images'] = request.args.getlist('images[]')
     params.pop('images[]', None)
-    return add(**params)
+    return add('vocabulary', **params)
+
+
+@app.route('/pronunciation/')
+def pronunciation():
+    decks = invoke("deckNames")
+    return render_template('pronunciation.html', decks=decks)
+
+
+@app.route('/pronunciation/search')
+def pronunciation_search():
+    word = request.args.get('word')
+    result = search(word, kind="pronunciation")
+    return render_template('search_result.html', kind="pronunciation", **result)
+
+
+@app.route("/pronunciation/add")
+def pronunciation_add():
+    params = dict(request.args)
+    params['images'] = request.args.getlist('images[]')
+    params.pop('images[]', None)
+    return add('pronunciation', **params)

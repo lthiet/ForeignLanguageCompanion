@@ -1,0 +1,33 @@
+<!doctype html>
+
+<head>
+  <title>Foreign Language Companion</title>
+  <script src="{{ url_for('static', filename='js/index.js') }}" type="text/javascript" defer></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" type="text/css">
+</head>
+
+<body>
+<a href="/">Back</a>
+  <form novalidate>
+    <label>Deck:</label>
+    <select id=deck>
+      {% for d in decks%}
+      <option value="{{d}}">{{d}}</option>
+      {% endfor %}
+    </select>
+    <br>
+    <label>Word (in target language)</label>
+    <input id="word" placeholder="Write the word here" />
+    <br>
+    <label>Spelling</label>
+    <input id="spelling" placeholder="Write the letters or group of letters to be focused here" />
+    <br>
+    <button class="btn btn-primary" id="search-submit" name="search-submit" type="button" value="Submit"
+      onclick="pronunciate()">
+      Pronunciation
+    </button>
+  </form>
+  <div class="form_container" id="result_search"></div>
+  <div class="form_container" id="result_add"></div>
+</body>
