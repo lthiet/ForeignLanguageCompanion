@@ -7,16 +7,7 @@ from pathlib import Path
 from bing_image_downloader import downloader
 from .image import download_image
 from .lang import code_to_name
-
-
-def download_audio(recording):
-    tmp_dir = os.path.join(os.getcwd(), "app/data/audio")
-    if not os.path.exists(tmp_dir):
-        os.mkdir(tmp_dir)
-    path = os.path.join(tmp_dir, recording.rsplit('/', 1)[-1])
-    with open(path, mode="wb") as f:
-        f.write(urlopen(recording).read())
-        return f.name
+from .audio import download_audio
 
 
 def search(word, target, kind='vocabulary'):
@@ -28,9 +19,7 @@ def search(word, target, kind='vocabulary'):
 
     parser = WiktionaryParser()
     # what happens if there are multiple results?
-    result = parser.fetch(word, code_to_name(target).lower())
-    print(result)
-    result = result[0]
+    result = parser.fetch(word, code_to_name(target).lower())[0]
     has_ipa = len(result['pronunciations']['text']) > 0
     has_recording = len(result['pronunciations']['audio']) > 0
     answer = {
@@ -43,5 +32,5 @@ def search(word, target, kind='vocabulary'):
                                  for e in result["definitions"]],
 
     if has_recording:
-        download_audio(answer['recordings'][0])
+        download_audio(answer['recordings'])
     return answer

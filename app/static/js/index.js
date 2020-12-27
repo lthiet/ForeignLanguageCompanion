@@ -136,3 +136,16 @@ function load_image() {
     }
   );
 }
+
+function addAudio() {
+  $.get(
+    "/audio/add",
+    {
+      word: $("#word_dst").val(),
+      target: $("#target").val(),
+    },
+    function (data) {
+      $("#recording").append(data);
+    }
+  );
+}

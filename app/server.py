@@ -12,6 +12,7 @@ from services.add import add
 from services.anki import invoke
 from services.image import download_image
 from services.lang import lang_code
+from services.audio import generate_audio
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'abcd'
 bootstrap = Bootstrap(app)
@@ -117,3 +118,10 @@ def image_search():
         "offset": offset
     }
     return render_template('image_search_result.html', **params)
+
+
+@app.route("/audio/add")
+def audio_add():
+    word = request.args.get('word')
+    target = request.args.get('target')
+    return generate_audio(word, target)

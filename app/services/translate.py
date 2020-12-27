@@ -7,7 +7,7 @@ from .config import cfg
 
 def language_specific_processing(entry, lang=None):
     if lang == 'de':
-        if entry['position'] == 'NOUN':
+        if entry['position'] == 'NOUN' or entry['position'] == 'OTHER':
             entry["word"] = entry["word"][0].upper() + entry["word"][1:]
             return entry
         else:
