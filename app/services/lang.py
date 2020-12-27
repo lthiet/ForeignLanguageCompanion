@@ -15,6 +15,9 @@ for (k, v) in response.items():
 
 
 def code_to_name(code):
+    # language specific answer
+    if code.startswith('zh'):
+        return "Chinese"
     for o in lang_code:
         if code == o['code']:
             return o['name']

@@ -28,7 +28,9 @@ def search(word, target, kind='vocabulary'):
 
     parser = WiktionaryParser()
     # what happens if there are multiple results?
-    result = parser.fetch(word, code_to_name(target).lower())[0]
+    result = parser.fetch(word, code_to_name(target).lower())
+    print(result)
+    result = result[0]
     has_ipa = len(result['pronunciations']['text']) > 0
     has_recording = len(result['pronunciations']['audio']) > 0
     answer = {
