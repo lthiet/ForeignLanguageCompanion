@@ -3,6 +3,7 @@ import requests
 import json
 from bs4 import BeautifulSoup
 from .config import cfg
+from .lang import code_to_name
 
 
 def language_specific_processing(entry, lang=None):
@@ -25,7 +26,37 @@ def translate_word(word, target, specification=None):
         # standard scraper method without API key
         has_api = False
 
-    if has_api:
+    supported_lang = target in [
+        'de'
+    ]
+    if supported_lang:
+        URL = f'https://dictionary.cambridge.org/dictionary/english-{code_to_name(target).lower()}/{word}'
+        page = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"})
+        soup = BeautifulSoup(page.content, 'html.parser')
+        if target == 'de':
+            cats = soup.find_all(class_='dlink')
+            l = []
+            for c in cats:
+                category = c.find_all(class_='dpos')[0].text
+
+                defs = c.find_all(class_='ddef_d')
+                for d in defs:
+                    definition = d.text
+                    translation = d.parent.parent.find_all(class_="dtrans")[
+                        0].text
+                    if category == 'noun' or category == 'noun plural':
+                        translation = translation.split(' ')[1]
+
+                    if category == specification or not specification in {'noun', 'adjective', 'verb'}:
+                        l.append({
+                            "position": category,
+                            "word": translation,
+                            "other": definition
+                        })
+            return l
+        else:
+            return []
+    elif has_api:
         key = cfg['translator']['key']
         location = cfg['translator']['location']
         url = f'https://api.cognitive.microsofttranslator.com/dictionary/lookup?api-version=3.0&from=en&to={target}'
@@ -46,26 +77,4 @@ def translate_word(word, target, specification=None):
             for e in response["translations"]]
         return l
     else:
-        URL = f'https://dictionary.cambridge.org/dictionary/english-german/{word}'
-        page = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"})
-
-        soup = BeautifulSoup(page.content, 'html.parser')
-        cats = soup.find_all(class_='dlink')
-        l = []
-        for c in cats:
-            category = c.find_all(class_='dpos')[0].text
-
-            defs = c.find_all(class_='ddef_d')
-            for d in defs:
-                definition = d.text
-                translation = d.parent.parent.find_all(class_="dtrans")[0].text
-                if category == 'noun' or category == 'noun plural':
-                    translation = translation.split(' ')[1]
-
-                if category == specification or not specification in {'noun', 'adjective', 'verb'}:
-                    l.append({
-                        "position": category,
-                        "word": translation,
-                        "other": definition
-                    })
-        return l
+        return []
