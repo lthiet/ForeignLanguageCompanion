@@ -1,22 +1,28 @@
 
 import os
 from urllib.request import urlopen
+import azure.cognitiveservices.speech as speechsdk
 from azure.cognitiveservices.speech import AudioDataStream, SpeechConfig, SpeechSynthesizer, SpeechSynthesisOutputFormat
 from azure.cognitiveservices.speech.audio import AudioOutputConfig
 from .config import cfg
 
 
 def generate_audio(text, target):
+    # create the path
+    tmp_dir = os.path.join(os.getcwd(), "app/data/audio")
+    if not os.path.exists(tmp_dir):
+        os.mkdir(tmp_dir)
+    path = os.path.join(tmp_dir, f'{target}-{text}.wav')
+
+    # query the API
     speech_config = SpeechConfig(
-        subscription=cfg['speech']['key'], endpoint=cfg['speech']['endpoint'])
-    path = os.path.join(os.getcwd(), "app/data/audio", f'{target}-{text}.wav')
+        subscription=cfg['speech']['key'], region=cfg['speech']['location'])
+
+    audio_config = AudioOutputConfig(filename=path)
     synthesizer = SpeechSynthesizer(
-        speech_config=speech_config, audio_config=None)
-    result = synthesizer.speak_text_async(
-        "Customizing audio output format.").get()
-    stream = AudioDataStream(result)
-    stream.save_to_wav_file(path)
-    return 'hi'
+        speech_config=speech_config, audio_config=audio_config)
+    result = synthesizer.speak_text(
+        text)
 
 
 def download_audio(recordings):
