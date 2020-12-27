@@ -55,7 +55,7 @@ function add_pronunciation() {
   $.get(
     "/pronunciation/add",
     {
-      word: $("#word").val(),
+      word: $("#word_dst").val(),
       spelling: $("#spelling").val(),
       ipa: $("#ipa").val(),
       recording: $("#recording").val(),

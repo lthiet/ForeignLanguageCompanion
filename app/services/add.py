@@ -6,6 +6,13 @@ import shutil
 def add(kind, **params):
     has_recording = not params['recording'] == ''
     anki = None
+
+    # preprocessing of the params
+
+    # if the audio was generated locally
+    if params['recording'].startswith('/'):
+        params['recording'] = 'http://127.0.0.1:5000' + params['recording']
+
     if kind == 'vocabulary':
         anki = {
 

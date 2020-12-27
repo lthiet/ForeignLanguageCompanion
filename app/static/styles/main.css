@@ -21,14 +21,14 @@ img {
 }
 
 #left {
-  width: 50%;
+  width: 80%;
   background: grey;
   height: 100%;
   float: left;
 }
 
 #right {
-  margin-left: 50%;
+  margin-left: 20%;
   height: 100%;
   background: blue;
 }

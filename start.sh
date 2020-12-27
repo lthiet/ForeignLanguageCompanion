@@ -1,2 +1,2 @@
 export FLASK_APP=app/server.py
-flask run --port=5001
+flask run --port=5000
