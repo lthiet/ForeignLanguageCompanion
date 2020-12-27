@@ -68,6 +68,8 @@ def vocabulary_image(word, i):
 @app.route('/vocabulary/add')
 def vocabulary_add():
     params = dict(request.args)
+    params['images'] = request.args.getlist('images[]')
+    params.pop('images[]', None)
     return add('vocabulary', **params)
 
 
@@ -101,7 +103,6 @@ def pronunciation_add():
     params = dict(request.args)
     params['images'] = request.args.getlist('images[]')
     params.pop('images[]', None)
-    print(params)
     return add('pronunciation', **params)
 
 

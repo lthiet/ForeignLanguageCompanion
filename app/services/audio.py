@@ -5,6 +5,19 @@ import azure.cognitiveservices.speech as speechsdk
 from azure.cognitiveservices.speech import AudioDataStream, SpeechConfig, SpeechSynthesizer, SpeechSynthesisOutputFormat
 from azure.cognitiveservices.speech.audio import AudioOutputConfig
 from .config import cfg
+from .lang import target_to_voice_name
+
+
+def create_ssml(text, target):
+
+    # TODO : can specify IPA here
+    return f"""<?xml version='1.0' encoding='UTF-8'?>
+    <speak xmlns="https://www.w3.org/2001/10/synthesis" version="1.0" xml:lang="{target}">
+        <voice name="{target_to_voice_name(target)}">
+            {text} 
+        </voice>
+    </speak>
+    """
 
 
 def generate_audio(text, target):
@@ -18,11 +31,13 @@ def generate_audio(text, target):
     speech_config = SpeechConfig(
         subscription=cfg['speech']['key'], region=cfg['speech']['location'])
 
+    ssml_string = create_ssml(text, target)
     audio_config = AudioOutputConfig(filename=path)
     synthesizer = SpeechSynthesizer(
         speech_config=speech_config, audio_config=audio_config)
-    result = synthesizer.speak_text(
-        text)
+    result = synthesizer.speak_ssml(ssml_string)
+    print(result)
+    print(result.cancellation_details)
 
 
 def download_audio(recordings):
