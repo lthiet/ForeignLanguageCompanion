@@ -32,3 +32,8 @@ img {
   height: 100%;
   background: blue;
 }
+
+#choose_sentence_result {
+  font-size: x-large;
+  font-weight: bolder;
+}

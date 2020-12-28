@@ -6,7 +6,6 @@ import shutil
 def add(kind, **params):
     has_recording = not params['recording'] == ''
     anki = None
-
     # if the audio was generated locally
     if params['recording'].startswith('/'):
         params['recording'] = 'http://127.0.0.1:5000' + params['recording']
@@ -66,6 +65,35 @@ def add(kind, **params):
                     "filename": url.strip('/')[-1],
                     "fields": [
                         "Picture of the example word"
+                    ]
+                } for url in params['images']]
+            }
+        }
+    elif kind == 'sentences':
+        anki = {
+            "note": {
+                "deckName": params['deck'],
+                "modelName": "3. All-Purpose Card",
+                "fields": {
+                    "Front (Example with word blanked out or missing)": params["text_hidden"],
+                    "Front (Definitions, base word, etc.)": params["front"],
+                    "Back (a single word/phrase, no context)": params["text_part"],
+                    "- The full sentence (no words blanked out)": params["text_full"],
+                    "• Make 2 cards? (\"y\" = yes, blank = no)": "y"
+                },
+                "tags": [],
+                "audio": [{
+                    "url": params['recording'],
+                    "filename": params['recording'].strip('/')[-1],
+                    "fields": [
+                        "- Extra Info (Pronunciation, personal connections, conjugations, etc)"
+                    ]
+                }] if has_recording else None,
+                "picture": [{
+                    "url": url,
+                    "filename": url.strip('/')[-1],
+                    "fields": [
+                        "Front (Picture)"
                     ]
                 } for url in params['images']]
             }

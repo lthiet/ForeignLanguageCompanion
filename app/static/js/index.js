@@ -149,3 +149,47 @@ function addAudio() {
     }
   );
 }
+
+function displaySentence() {
+  $("#choose_sentence_result").text($("#word_dst").val());
+  $("#choose_sentence_description").html(
+    '<br> Select part of the sentence and click Select <br>     <button onclick="selectSentence()" id="select_sentence">Select</button>'
+  );
+}
+
+function selectSentence() {
+  text_part = window.getSelection().toString();
+  if (text_part == "") {
+    window.alert("You didn't choose anything");
+    return;
+  }
+
+  $.get("/sentences/search", {}, function (data) {
+    $("#select_sentence_result").append(data);
+  });
+  $("#choose_sentence_description").html(
+    "You chose : <em id='text_part'>" + text_part + "</em>"
+  );
+}
+
+function add_sentences() {
+  $.get(
+    "/sentences/add/",
+    {
+      text_full: $("#word_dst").val(),
+      recording: $("#recording").val(),
+      front: $("#front").val(),
+      text_part: $("#text_part").text(),
+      images: $(".selected")
+        .map(function () {
+          return this.src;
+        })
+        .get(),
+      deck: $("#deck").val(),
+    },
+    function (data) {
+      $("#result_add").html(data);
+      clearAll();
+    }
+  );
+}

@@ -36,8 +36,6 @@ def generate_audio(text, target):
     synthesizer = SpeechSynthesizer(
         speech_config=speech_config, audio_config=audio_config)
     result = synthesizer.speak_ssml(ssml_string)
-    print(result)
-    print(result.cancellation_details)
 
 
 def download_audio(recordings):

@@ -13,6 +13,7 @@ from services.anki import invoke
 from services.image import download_image
 from services.lang import lang_code
 from services.audio import generate_audio
+from services.sentence import process_sentence
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'abcd'
 bootstrap = Bootstrap(app)
@@ -111,10 +112,11 @@ def image_search():
     word = request.args.get('word')
     offset = int(request.args.get('offset'))
     target = request.args.get('target')
-    download_image(word, target=target, offset=offset)
+    n = 5
+    download_image(word, target=target, offset=offset, n=n)
     params = {
         "word": word,
-        "n": 3,
+        "n": n,
         "offset": offset
     }
     return render_template('image_search_result.html', **params)
@@ -133,3 +135,28 @@ def audio_add():
 def audio(target, word):
     path = os.path.join(os.getcwd(), "app/data/audio", f"{target}-{word}.wav")
     return send_file(path)
+
+
+@app.route("/sentences/")
+def sentences():
+    params = {
+        "decks":  invoke("deckNames"),
+        "lang_code": lang_code
+    }
+    return render_template('sentences.html', **params)
+
+
+@app.route("/sentences/search/")
+def sentences_search():
+    return render_template('select_sentence_result.html', kind="sentences")
+
+
+@app.route("/sentences/add/")
+def sentences_add():
+    text_full = request.args.get('text_full')
+    text_part = request.args.get('text_part')
+    params = dict(request.args)
+    params['text_hidden'] = process_sentence(text_full, text_part)
+    params['images'] = request.args.getlist('images[]')
+    params.pop('images[]', None)
+    return add('sentences', **params)
