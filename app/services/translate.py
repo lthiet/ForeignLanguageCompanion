@@ -2,6 +2,7 @@ import os
 import requests
 import json
 from bs4 import BeautifulSoup
+import string
 from .config import cfg
 from .lang import code_to_name
 
@@ -17,6 +18,75 @@ def language_specific_processing(entry, lang=None):
         return entry
 
 
+def translate_de(word):
+    URL = f'https://dictionary.cambridge.org/dictionary/english-german/{word}'
+    page = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"})
+    soup = BeautifulSoup(page.content, 'html.parser')
+    cats = soup.find_all(class_='dlink')
+    l = []
+    for c in cats:
+        category = c.find_all(class_='dpos')[0].text
+
+        defs = c.find_all(class_='ddef_d')
+        for d in defs:
+            definition = d.text
+            translation = d.parent.parent.find_all(class_="dtrans")[
+                0].text
+            if category == 'noun' or category == 'noun plural':
+                translation = translation.split(' ')[1]
+
+            l.append({
+                "position": category,
+                "word": translation,
+                "other": definition
+            })
+    return l
+
+
+def translate_tr(word):
+    print('NOT IMPLEMENTED YET')
+    return []
+
+
+def remove_punctuation(s):
+    r = ''
+    for c in s:
+        if not c in string.punctuation:
+            r += c
+    return r
+
+
+def translate_es(word):
+    URL = f'https://dictionary.cambridge.org/dictionary/english-spanish/{word}'
+    page = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"})
+    soup = BeautifulSoup(page.content, 'html.parser')
+    defs = soup.find_all(class_='entry-body__el')
+    l = []
+    for d in defs:
+        category = d.find_all(class_='dpos')[0].text
+        translation = d.find_all(class_="dtrans")[0].text.strip().split(' ')[
+            0]
+        translation = remove_punctuation(translation)
+        other = d.find_all(class_='ddef_d')[0].text
+
+        l.append({
+            "position": category,
+            "word": translation,
+            "other": other
+        })
+
+    return l
+
+
+def supported_Lang_translate(word, target):
+    if target == 'de':
+        return translate_de(word)
+    elif target == 'tr':
+        return translate_tr(word)
+    elif target == 'es':
+        return translate_es(word)
+
+
 def translate_word(word, target, specification=None):
     has_api = True
     try:
@@ -27,35 +97,13 @@ def translate_word(word, target, specification=None):
         has_api = False
 
     supported_lang = target in [
-        'de'
+        'de',
+        'tr',
+        'es'
     ]
+
     if supported_lang:
-        URL = f'https://dictionary.cambridge.org/dictionary/english-{code_to_name(target).lower()}/{word}'
-        page = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"})
-        soup = BeautifulSoup(page.content, 'html.parser')
-        if target == 'de':
-            cats = soup.find_all(class_='dlink')
-            l = []
-            for c in cats:
-                category = c.find_all(class_='dpos')[0].text
-
-                defs = c.find_all(class_='ddef_d')
-                for d in defs:
-                    definition = d.text
-                    translation = d.parent.parent.find_all(class_="dtrans")[
-                        0].text
-                    if category == 'noun' or category == 'noun plural':
-                        translation = translation.split(' ')[1]
-
-                    if category == specification or not specification in {'noun', 'adjective', 'verb'}:
-                        l.append({
-                            "position": category,
-                            "word": translation,
-                            "other": definition
-                        })
-            return l
-        else:
-            return []
+        return supported_Lang_translate(word, target)
     elif has_api:
         key = cfg['translator']['key']
         location = cfg['translator']['location']

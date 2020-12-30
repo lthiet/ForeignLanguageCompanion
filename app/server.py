@@ -51,10 +51,9 @@ def vocabulary_search():
     target = request.args.get('target')
 
     # TODO: some words have commas in them, not sure why
-    word = word.replace(',', '').replace(';', '')
+    # word = word.replace(',', '').replace(';', '')
 
     result = search(word, target, kind='vocabulary')
-
     return render_template('search_result.html', kind="vocabulary", **result)
 
 
@@ -69,7 +68,6 @@ def vocabulary_image(word, i):
 @app.route('/vocabulary/add')
 def vocabulary_add():
     params = dict(request.args)
-    print(params)
     params['images'] = request.args.getlist('images[]')
     params.pop('images[]', None)
     return add('vocabulary', **params)
