@@ -6,16 +6,15 @@ from flask import send_file
 import glob
 import os
 import pandas as pd
-from app.services.translate import translate_word
-from app.services.search import search
-from app.services.add import add
-from app.services.anki import invoke
-from app.services.image import download_image
-from app.services.lang import lang_code
-from app.services.audio import generate_audio
-from app.services.sentence import process_sentence
-app = Flask(__name__, template_folder="app/templates",
-            static_folder="app/static")
+from services.translate import translate_word
+from services.search import search
+from services.add import add
+from services.anki import invoke
+from services.image import download_image
+from services.lang import lang_code
+from services.audio import generate_audio
+from services.sentence import process_sentence
+app = Flask(__name__)
 app.config['SECRET_KEY'] = 'abcd'
 bootstrap = Bootstrap(app)
 
@@ -52,10 +51,9 @@ def vocabulary_search():
     target = request.args.get('target')
 
     # TODO: some words have commas in them, not sure why
-    word = word.replace(',', '').replace(';', '')
+    # word = word.replace(',', '').replace(';', '')
 
     result = search(word, target, kind='vocabulary')
-
     return render_template('search_result.html', kind="vocabulary", **result)
 
 
@@ -161,7 +159,3 @@ def sentences_add():
     params['images'] = request.args.getlist('images[]')
     params.pop('images[]', None)
     return add('sentences', **params)
-
-
-if __name__ == '__main__':
-    app.run()
