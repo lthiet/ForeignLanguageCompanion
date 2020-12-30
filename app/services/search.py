@@ -42,7 +42,6 @@ def search(word, target, kind='vocabulary'):
     if kind == 'vocabulary':
         answer['word_usages'] = [strip_unprintable(e["partOfSpeech"] + ": " + e["text"][0])
                                  for e in result["definitions"]],
-    print(answer)
 
     if has_recording:
         download_audio(answer['recordings'])
