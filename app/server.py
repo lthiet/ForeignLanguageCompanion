@@ -69,6 +69,7 @@ def vocabulary_image(word, i):
 @app.route('/vocabulary/add')
 def vocabulary_add():
     params = dict(request.args)
+    print(params)
     params['images'] = request.args.getlist('images[]')
     params.pop('images[]', None)
     return add('vocabulary', **params)

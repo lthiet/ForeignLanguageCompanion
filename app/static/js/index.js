@@ -37,6 +37,7 @@ function add_vocabulary() {
       ipa: $("#ipa").val(),
       word_usage: $("#word_usage").val(),
       recording: $("#recording").val(),
+      spelling: $("#spelling").val(),
       images: $(".selected")
         .map(function () {
           return this.src;

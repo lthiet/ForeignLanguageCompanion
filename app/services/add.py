@@ -20,7 +20,7 @@ def add(kind, **params):
                     "Word": params['word'],
                     "Gender, Personal Connection, Extra Info (Back side)": params['word_usage'],
                     "Pronunciation (Recording and/or IPA)": params['ipa'],
-                    "Test Spelling? (y = yes, blank = no)": ""
+                    "Test Spelling? (y = yes, blank = no)": "y" if params['spelling'] else ""
                 },
                 "tags": [],
                 "audio": [{
