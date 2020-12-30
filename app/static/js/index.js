@@ -188,8 +188,9 @@ function add_sentences() {
       deck: $("#deck").val(),
     },
     function (data) {
-      $("#result_add").html(data);
-      clearAll();
+      $("#choose_sentence_result").html("");
+      $("#choose_sentence_description").html("");
+      $("#select_sentence_result").html("");
     }
   );
 }

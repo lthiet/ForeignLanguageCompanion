@@ -40,7 +40,7 @@ def download_image(word, target=None, offset=0, n=10):
                                 word)
             if not os.path.exists(path):
                 os.makedirs(path, exist_ok=True)
-            im.save(os.path.join(path, f"Image_{i+1+int(offset)}.png"), "PNG")
+            im.save(os.path.join(path, f"Image_{i+1+int(offset)}.jpg"), "JPEG")
     else:
         downloader.download(word, limit=5,  output_dir='app/data/images',
                             adult_filter_off=True, force_replace=False, timeout=1)

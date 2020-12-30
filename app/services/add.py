@@ -79,7 +79,7 @@ def add(kind, **params):
                     "Front (Definitions, base word, etc.)": params["front"],
                     "Back (a single word/phrase, no context)": params["text_part"],
                     "- The full sentence (no words blanked out)": params["text_full"],
-                    "• Make 2 cards? (\"y\" = yes, blank = no)": "y"
+                    # "• Make 2 cards? (\"y\" = yes, blank = no)": "y"
                 },
                 "tags": [],
                 "audio": [{

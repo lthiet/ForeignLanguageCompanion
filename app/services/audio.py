@@ -30,7 +30,8 @@ def generate_audio(text, target):
     # query the API
     speech_config = SpeechConfig(
         subscription=cfg['speech']['key'], region=cfg['speech']['location'])
-
+    speech_config.set_speech_synthesis_output_format(
+        SpeechSynthesisOutputFormat["Audio24Khz96KBitRateMonoMp3"])
     ssml_string = create_ssml(text, target)
     audio_config = AudioOutputConfig(filename=path)
     synthesizer = SpeechSynthesizer(
