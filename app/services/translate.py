@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import string
 from .config import cfg
 from .lang import code_to_name
+import re
 
 
 def language_specific_processing(entry, lang=None):
@@ -44,8 +45,37 @@ def translate_de(word):
 
 
 def translate_tr(word):
-    print('NOT IMPLEMENTED YET')
     return []
+
+
+def translate_ja(word):
+    return []
+
+
+def translate_ko(word):
+    return []
+
+
+def translate_zh(word):
+    URL = f'https://dictionary.cambridge.org/dictionary/english-chinese-traditional/{word}'
+    page = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"})
+    soup = BeautifulSoup(page.content, 'html.parser')
+    defs = soup.find_all(class_='ddef_d')
+    l = []
+    for d in defs:
+        other = d.text
+        translation = d.parent.parent.find_all(class_='dtrans')[0].text
+        translation = re.split('，|；', translation)[0]
+        category = d.parent.parent.parent.parent.parent.parent.find_all(
+            class_='dpos')
+        category = category[0].text if category != [] else ''
+        l.append({
+            "position": category,
+            "word": translation,
+            "other": other
+        })
+
+    return l
 
 
 def remove_punctuation(s):
@@ -85,6 +115,12 @@ def supported_Lang_translate(word, target):
         return translate_tr(word)
     elif target == 'es':
         return translate_es(word)
+    elif target == 'zh-Hans':
+        return translate_zh(word)
+    elif target == 'ja':
+        return translate_ja(word)
+    elif target == 'ko':
+        return translate_ko(word)
 
 
 def translate_word(word, target, specification=None):
@@ -99,7 +135,10 @@ def translate_word(word, target, specification=None):
     supported_lang = target in [
         'de',
         'tr',
-        'es'
+        'es',
+        'zh-Hans',
+        'ja',
+        'ko'
     ]
 
     if supported_lang:
