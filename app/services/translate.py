@@ -45,15 +45,69 @@ def translate_de(word):
 
 
 def translate_tr(word):
-    return []
+    URL = f'https://dictionary.cambridge.org/dictionary/english-turkish/{word}'
+    page = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"})
+    soup = BeautifulSoup(page.content, 'html.parser')
+    defs = soup.find_all(class_='ddef_d')
+    l = []
+    for d in defs:
+        other = d.text
+        translation = d.parent.parent.find_all(class_='dtrans')[0].text
+        translation = re.split('，|；', translation)[0]
+        category = d.parent.parent.parent.parent.parent.parent.find_all(
+            class_='dpos')
+        category = category[0].text if category != [] else ''
+        l.append({
+            "position": category,
+            "word": translation,
+            "other": other
+        })
+
+    return l
 
 
 def translate_ja(word):
-    return []
+    URL = f'https://dictionary.cambridge.org/dictionary/english-japanese/{word}'
+    page = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"})
+    soup = BeautifulSoup(page.content, 'html.parser')
+    defs = soup.find_all(class_='ddef_d')
+    l = []
+    for d in defs:
+        other = d.text
+        translation = d.parent.parent.find_all(class_='dtrans')[0].text
+        translation = re.split('，|；', translation)[0]
+        category = d.parent.parent.parent.parent.parent.parent.find_all(
+            class_='dpos')
+        category = category[0].text if category != [] else ''
+        l.append({
+            "position": category,
+            "word": translation,
+            "other": other
+        })
+
+    return l
 
 
 def translate_ko(word):
-    return []
+    URL = f'https://dictionary.cambridge.org/dictionary/english-korean/{word}'
+    page = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"})
+    soup = BeautifulSoup(page.content, 'html.parser')
+    defs = soup.find_all(class_='ddef_d')
+    l = []
+    for d in defs:
+        other = d.text
+        translation = d.parent.parent.find_all(class_='dtrans')[0].text
+        translation = re.split('，|；', translation)[0]
+        category = d.parent.parent.parent.parent.parent.parent.find_all(
+            class_='dpos')
+        category = category[0].text if category != [] else ''
+        l.append({
+            "position": category,
+            "word": translation,
+            "other": other
+        })
+
+    return l
 
 
 def translate_zh(word):
@@ -90,15 +144,15 @@ def translate_es(word):
     URL = f'https://dictionary.cambridge.org/dictionary/english-spanish/{word}'
     page = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"})
     soup = BeautifulSoup(page.content, 'html.parser')
-    defs = soup.find_all(class_='entry-body__el')
+    defs = soup.find_all(class_='ddef_d')
     l = []
     for d in defs:
-        category = d.find_all(class_='dpos')[0].text
-        translation = d.find_all(class_="dtrans")[0].text.strip().split(' ')[
-            0]
-        translation = remove_punctuation(translation)
-        other = d.find_all(class_='ddef_d')[0].text
-
+        other = d.text
+        translation = d.parent.parent.find_all(class_='dtrans')[0].text
+        translation = re.split('，|；', translation)[0]
+        category = d.parent.parent.parent.parent.parent.parent.find_all(
+            class_='dpos')
+        category = category[0].text if category != [] else ''
         l.append({
             "position": category,
             "word": translation,
