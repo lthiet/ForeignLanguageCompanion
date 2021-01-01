@@ -195,3 +195,17 @@ function add_sentences() {
     }
   );
 }
+function searchAbstractWord() {
+  $.get(
+    "/vocabulary/abstract_word/",
+    {
+      word_src: $("#word_src").val(),
+      word_dst: $("#word_dst").val(),
+      detail: $("#word_dst option:selected").text(),
+      target: $("#target").val(),
+    },
+    function (data) {
+      window.alert(data);
+    }
+  );
+}

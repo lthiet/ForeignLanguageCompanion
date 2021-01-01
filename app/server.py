@@ -13,7 +13,7 @@ from services.anki import invoke
 from services.image import download_image
 from services.lang import lang_code
 from services.audio import generate_audio
-from services.sentence import process_sentence
+from services.sentence import process_sentence, get_abstract_word
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'abcd'
 bootstrap = Bootstrap(app)
@@ -159,3 +159,13 @@ def sentences_add():
     params['images'] = request.args.getlist('images[]')
     params.pop('images[]', None)
     return add('sentences', **params)
+
+
+@app.route('/vocabulary/abstract_word/')
+def abstract_word():
+    req = request.args
+    word_src = req.get("word_src")
+    word_dst = req.get("word_dst")
+    target = req.get("target")
+    detail = req.get("detail")
+    return str(get_abstract_word(word_src, word_dst, target, detail))

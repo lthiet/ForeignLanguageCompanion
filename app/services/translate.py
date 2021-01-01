@@ -33,7 +33,8 @@ def translate_cambridge(word, target=None, target_name=None):
         category = category[0].text if category != [] else ''
         l.append({
             "position": category,
-            "word": translation,
+            # TODO: deal with synonyms
+            "word": translation.split(',')[0],
             "other": other
         })
 
