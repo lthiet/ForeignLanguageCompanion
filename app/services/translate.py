@@ -8,127 +8,61 @@ from .lang import code_to_name
 import re
 
 
-def language_specific_processing(entry, lang=None):
-    if lang == 'de':
-        if entry['position'] == 'NOUN' or entry['position'] == 'OTHER':
-            entry["word"] = entry["word"][0].upper() + entry["word"][1:]
-            return entry
-        else:
-            return entry
+def translate_cambridge(word, target=None, target_name=None):
+    if target_name is None:
+        target_url = code_to_name(target).lower()
     else:
-        return entry
+        target_url = target_name
+
+    URL = f'https://dictionary.cambridge.org/dictionary/english-{target_url}/{word}'
+    page = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"})
+    soup = BeautifulSoup(page.content, 'html.parser')
+    defs = soup.find_all(class_='ddef_d')
+    l = []
+    for d in defs:
+        other = d.text
+        translation = d.parent.parent.find_all(class_='dtrans')[0].text.strip()
+        parent = d.parent.parent.parent.parent.parent.parent
+        category = parent.find_all(
+            class_='dpos')
+        while category == []:
+            parent = parent.parent
+            category = parent.find_all(
+                class_='dpos')
+
+        category = category[0].text if category != [] else ''
+        l.append({
+            "position": category,
+            "word": translation,
+            "other": other
+        })
+
+    return l
 
 
 def translate_de(word):
-    URL = f'https://dictionary.cambridge.org/dictionary/english-german/{word}'
-    page = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"})
-    soup = BeautifulSoup(page.content, 'html.parser')
-    cats = soup.find_all(class_='dlink')
-    l = []
-    for c in cats:
-        category = c.find_all(class_='dpos')[0].text
+    def remove_determiner(text):
+        # Der, Die, Das
+        return text[3:]
 
-        defs = c.find_all(class_='ddef_d')
-        for d in defs:
-            definition = d.text
-            translation = d.parent.parent.find_all(class_="dtrans")[
-                0].text
-            if category == 'noun' or category == 'noun plural':
-                translation = translation.split(' ')[1]
+    def noun_postprocess(entry):
+        if entry['position'] in ['noun', 'noun_plural']:
+            entry["word"] = remove_determiner(entry["word"])
+        return entry
 
-            l.append({
-                "position": category,
-                "word": translation,
-                "other": definition
-            })
-    return l
+    return [noun_postprocess(e) for e in translate_cambridge(word, "de")]
 
 
 def translate_tr(word):
-    URL = f'https://dictionary.cambridge.org/dictionary/english-turkish/{word}'
-    page = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"})
-    soup = BeautifulSoup(page.content, 'html.parser')
-    defs = soup.find_all(class_='ddef_d')
     l = []
-    for d in defs:
-        other = d.text
-        translation = d.parent.parent.find_all(class_='dtrans')[0].text
-        translation = re.split('，|；', translation)[0]
-        category = d.parent.parent.parent.parent.parent.parent.find_all(
-            class_='dpos')
-        category = category[0].text if category != [] else ''
-        l.append({
-            "position": category,
-            "word": translation,
-            "other": other
-        })
-
-    return l
-
-
-def translate_ja(word):
-    URL = f'https://dictionary.cambridge.org/dictionary/english-japanese/{word}'
-    page = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"})
-    soup = BeautifulSoup(page.content, 'html.parser')
-    defs = soup.find_all(class_='ddef_d')
-    l = []
-    for d in defs:
-        other = d.text
-        translation = d.parent.parent.find_all(class_='dtrans')[0].text
-        translation = re.split('，|；', translation)[0]
-        category = d.parent.parent.parent.parent.parent.parent.find_all(
-            class_='dpos')
-        category = category[0].text if category != [] else ''
-        l.append({
-            "position": category,
-            "word": translation,
-            "other": other
-        })
-
-    return l
-
-
-def translate_ko(word):
-    URL = f'https://dictionary.cambridge.org/dictionary/english-korean/{word}'
-    page = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"})
-    soup = BeautifulSoup(page.content, 'html.parser')
-    defs = soup.find_all(class_='ddef_d')
-    l = []
-    for d in defs:
-        other = d.text
-        translation = d.parent.parent.find_all(class_='dtrans')[0].text
-        translation = re.split('，|；', translation)[0]
-        category = d.parent.parent.parent.parent.parent.parent.find_all(
-            class_='dpos')
-        category = category[0].text if category != [] else ''
-        l.append({
-            "position": category,
-            "word": translation,
-            "other": other
-        })
-
-    return l
-
-
-def translate_zh(word):
-    URL = f'https://dictionary.cambridge.org/dictionary/english-chinese-traditional/{word}'
-    page = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"})
-    soup = BeautifulSoup(page.content, 'html.parser')
-    defs = soup.find_all(class_='ddef_d')
-    l = []
-    for d in defs:
-        other = d.text
-        translation = d.parent.parent.find_all(class_='dtrans')[0].text
-        translation = re.split('，|；', translation)[0]
-        category = d.parent.parent.parent.parent.parent.parent.find_all(
-            class_='dpos')
-        category = category[0].text if category != [] else ''
-        l.append({
-            "position": category,
-            "word": translation,
-            "other": other
-        })
-
+    n = 0
+    done = False
+    i = 1
+    while not done:
+        l += translate_cambridge(word + f'_{i}', 'tr')
+        i += 1
+        done = len(l) - n == 0
+        n = len(l)
     return l
 
 
@@ -140,44 +74,7 @@ def remove_punctuation(s):
     return r
 
 
-def translate_es(word):
-    URL = f'https://dictionary.cambridge.org/dictionary/english-spanish/{word}'
-    page = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"})
-    soup = BeautifulSoup(page.content, 'html.parser')
-    defs = soup.find_all(class_='ddef_d')
-    l = []
-    for d in defs:
-        other = d.text
-        translation = d.parent.parent.find_all(class_='dtrans')[0].text
-        translation = re.split('，|；', translation)[0]
-        category = d.parent.parent.parent.parent.parent.parent.find_all(
-            class_='dpos')
-        category = category[0].text if category != [] else ''
-        l.append({
-            "position": category,
-            "word": translation,
-            "other": other
-        })
-
-    return l
-
-
-def supported_Lang_translate(word, target):
-    if target == 'de':
-        return translate_de(word)
-    elif target == 'tr':
-        return translate_tr(word)
-    elif target == 'es':
-        return translate_es(word)
-    elif target == 'zh-Hans':
-        return translate_zh(word)
-    elif target == 'ja':
-        return translate_ja(word)
-    elif target == 'ko':
-        return translate_ko(word)
-
-
-def translate_word(word, target, specification=None):
+def translate_azure(word, target):
     has_api = True
     try:
         # user has a API key, use this service instead
@@ -186,36 +83,47 @@ def translate_word(word, target, specification=None):
         # standard scraper method without API key
         has_api = False
 
-    supported_lang = target in [
-        'de',
-        'tr',
-        'es',
-        'zh-Hans',
-        'ja',
-        'ko'
-    ]
-
-    if supported_lang:
-        return supported_Lang_translate(word, target)
-    elif has_api:
-        key = cfg['translator']['key']
-        location = cfg['translator']['location']
-        url = f'https://api.cognitive.microsofttranslator.com/dictionary/lookup?api-version=3.0&from=en&to={target}'
-        headers = {
-            'Ocp-Apim-Subscription-Key': key,
-            'Ocp-Apim-Subscription-Region': location,
-            'Content-type': 'application/json',
-        }
-        body = {
-            'text': word
-        }
-        response = requests.post(url, headers=headers, json=body)
-        response = json.loads(response.content.decode())
-        l = [language_specific_processing({
-            "position": e["posTag"],
-            "word": e["displayTarget"],
-            "other": "confidence : " + str(e["confidence"])}, lang=target)
-            for e in response["translations"]]
-        return l
-    else:
+    if not has_api:
+        print("NO API KEY FOUND")
         return []
+
+    key = cfg['translator']['key']
+    location = cfg['translator']['location']
+    url = f'https://api.cognitive.microsofttranslator.com/dictionary/lookup?api-version=3.0&from=en&to={target}'
+    headers = {
+        'Ocp-Apim-Subscription-Key': key,
+        'Ocp-Apim-Subscription-Region': location,
+        'Content-type': 'application/json',
+    }
+    body = {
+        'text': word
+    }
+    response = requests.post(url, headers=headers, json=body)
+    response = json.loads(response.content.decode())
+    l = [
+        {
+            "position": e["posTag"],
+            "word": e["normalizedTarget"],
+            "other": str(e["confidence"]) + ': ' + ', '.join(a["normalizedText"] for a in e["backTranslations"])
+        }
+        for e in response["translations"]
+    ]
+    return l
+
+
+def translate_word(word, target, specification=None):
+    if target == 'de':
+        return translate_de(word)
+    elif target == 'tr':
+        return translate_tr(word)
+    elif target == 'zh-Hans':
+        return translate_cambridge(word, target_name='chinese-simplified')
+    elif target == 'pt':
+        return translate_cambridge(word, target_name='portuguese')
+    elif target == 'ms':
+        return translate_cambridge(word, target_name='malaysian')
+    elif target in ['ja', 'ko', 'ar', 'es', 'fr', 'id', 'it', 'pl', 'ca', 'cs', 'da', 'nb', 'ru', 'th', 'vi']:
+        return translate_cambridge(word, target)
+    # Last resort, try with Microsoft Translator API
+    else:
+        return translate_azure(word, target)
