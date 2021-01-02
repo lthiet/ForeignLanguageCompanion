@@ -9,6 +9,7 @@
 
 <body>
 <a href="/">Back</a>
+<div id="definition" data-definition="{{definition}}"></div>
     <label>Deck:</label>
     <select id=deck>
       {% for d in decks%}
@@ -24,7 +25,7 @@
     </select>
     <br>
     <label for="sentence">Sentence</label>
-    <input id="word_dst" type="text">
+    <input id="word_dst" type="text" value="{{example}}">
     <button onclick="displaySentence()" id="display_sentence">Process sentence</button>
     <div id="choose_sentence_result"></div>
     <div id="choose_sentence_description"></div>

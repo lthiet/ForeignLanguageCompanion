@@ -167,6 +167,7 @@ function selectSentence() {
 
   $.get("/sentences/search", {}, function (data) {
     $("#select_sentence_result").append(data);
+    $("#front").val($("#definition").data("definition"));
   });
   $("#choose_sentence_description").html(
     "You chose : <em id='text_part'>" + text_part + "</em>"
@@ -205,7 +206,9 @@ function searchAbstractWord() {
       target: $("#target").val(),
     },
     function (data) {
-      window.alert(data);
+      var newDoc = document.open("text/html", "replace");
+      newDoc.write(data);
+      newDoc.close();
     }
   );
 }

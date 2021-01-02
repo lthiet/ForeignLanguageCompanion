@@ -137,10 +137,14 @@ def audio(target, word):
 
 
 @app.route("/sentences/")
-def sentences():
+def sentences(example=None, definition=None):
     params = {
         "decks":  invoke("deckNames"),
-        "lang_code": lang_code
+        "lang_code": lang_code,
+
+        # From abstract words
+        "example": example,
+        "definition": definition
     }
     return render_template('sentences.html', **params)
 
@@ -168,4 +172,6 @@ def abstract_word():
     word_dst = req.get("word_dst")
     target = req.get("target")
     detail = req.get("detail")
-    return str(get_abstract_word(word_src, word_dst, target, detail))
+    res = get_abstract_word(word_src, word_dst, target, detail)
+    print(res)
+    return sentences(example=res["examples"][0] if len(res["examples"]) > 0 else '', definition=res["definition"])
