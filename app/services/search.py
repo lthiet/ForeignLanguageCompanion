@@ -26,7 +26,8 @@ def search(word, target, kind='vocabulary'):
     has_recording = len(result['pronunciations']['audio']) > 0
     answer = {
         "word": word,
-        "ipas": [e.replace(',', '') for e in result["pronunciations"]["text"][0].split(' ')[1:]] if has_ipa else '',
+        # "ipas": [e.replace(',', '') for e in result["pronunciations"]["text"][0].split(' ')[1:]] if has_ipa else '',
+        "ipas": [result["pronunciations"]["text"][0]] if has_ipa else '',
         "recordings": ["https:" + e for e in result['pronunciations']['audio']] if has_recording else ''
     }
 

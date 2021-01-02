@@ -58,13 +58,18 @@ def translate_tr(word):
     l = []
     n = 0
     done = False
-    i = 1
+    i = 0
     while not done:
-        l += translate_cambridge(word + f'_{i}', 'tr')
+        l += translate_cambridge(word + '' if i == 0 else f'_{i}', 'tr')
         i += 1
         done = len(l) - n == 0
         n = len(l)
-    return l
+
+    def clean_up(entry):
+        entry["word"] = remove_punctuation(entry["word"].lower())
+        return entry
+
+    return [clean_up(e) for e in l]
 
 
 def remove_punctuation(s):
