@@ -22,6 +22,10 @@ def add(kind, **params):
                     "Pronunciation (Recording and/or IPA)": params['ipa'],
                     "Test Spelling? (y = yes, blank = no)": "y" if params['spelling'] else ""
                 },
+                "options": {
+                    "allowDuplicate": True,
+                },
+
                 "tags": [],
                 "audio": [{
                     "url": params['recording'],

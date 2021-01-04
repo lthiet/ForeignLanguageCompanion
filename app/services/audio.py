@@ -11,13 +11,14 @@ from .lang import target_to_voice_name
 def create_ssml(text, target):
 
     # TODO : can specify IPA here
-    return f"""<?xml version='1.0' encoding='UTF-8'?>
+    ssml = f"""<?xml version='1.0' encoding='UTF-8'?>
     <speak xmlns="https://www.w3.org/2001/10/synthesis" version="1.0" xml:lang="{target}">
         <voice name="{target_to_voice_name(target)}">
             {text} 
         </voice>
     </speak>
     """
+    return ssml
 
 
 def generate_audio(text, target):

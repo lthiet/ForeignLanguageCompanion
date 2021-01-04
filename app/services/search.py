@@ -27,21 +27,24 @@ def search(word, target, kind='vocabulary'):
     answer = {
         "word": word,
         # "ipas": [e.replace(',', '') for e in result["pronunciations"]["text"][0].split(' ')[1:]] if has_ipa else '',
-        "ipas": [result["pronunciations"]["text"][0]] if has_ipa else '',
+        "ipas": ', '.join(result["pronunciations"]["text"]),
         "recordings": ["https:" + e for e in result['pronunciations']['audio']] if has_recording else ''
     }
 
+    # TODO: is this actually needed?
     def strip_unprintable(data):
         res = ''
         for c in data:
-            if c in string.printable:
+            if not c in ['']:
                 res += c
             else:
                 res += ' '
         return res
 
     if kind == 'vocabulary':
-        answer['word_usages'] = [strip_unprintable(e["partOfSpeech"] + ": " + e["text"][0])
+        # answer['word_usages'] = [strip_unprintable(
+        #     e["partOfSpeech"] + ": " + e["text"][0])for e in result["definitions"]]
+        answer['word_usages'] = [e["partOfSpeech"] + ": " + e["text"][0]
                                  for e in result["definitions"]]
 
     if has_recording:

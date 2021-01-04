@@ -117,10 +117,10 @@ function word_list() {
   );
 }
 
-function replace_word(event) {
-  word = event.target.id;
+function replace_word_src(event) {
+  word = event.target.getAttribute("data-word");
   $("#word_src").val(word);
-  $("#" + word).remove();
+  $("#" + event.target.id).remove();
 }
 
 function load_image() {
@@ -211,4 +211,8 @@ function searchAbstractWord() {
       newDoc.close();
     }
   );
+}
+
+function replace_word_dst(event) {
+  $("#word_dst").val(event.target.getAttribute("data-word"));
 }

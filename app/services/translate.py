@@ -44,7 +44,7 @@ def translate_cambridge(word, target=None, target_name=None):
 def translate_de(word):
     def remove_determiner(text):
         # Der, Die, Das
-        return text[3:]
+        return text[4:]
 
     def noun_postprocess(entry):
         if entry['position'] in ['noun', 'noun_plural']:
@@ -58,12 +58,16 @@ def translate_tr(word):
     l = []
     n = 0
     done = False
-    i = 0
+    # TODO: Some words needs i to be 0 here, investigate at a later time...
+    i = 1
     while not done:
-        l += translate_cambridge(word + '' if i == 0 else f'_{i}', 'tr')
+        r = translate_cambridge(word + ('' if i == 0 else f'_{i}'), 'tr')
+        # TODO: Not perfect but odds that both verb and noun yield the same amount of result and there is another valid position is unlikely
+        done = len(r) - n == 0
+        n = len(r)
         i += 1
-        done = len(l) - n == 0
-        n = len(l)
+        if not done:
+            l += r
 
     def clean_up(entry):
         entry["word"] = remove_punctuation(entry["word"].lower())

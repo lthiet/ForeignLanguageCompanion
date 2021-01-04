@@ -2,13 +2,17 @@
 <label>
     Word (in target language)
 </label>
-<select id="word_dst">
+<input type="text" list="words" id="word_dst"/>
+<datalist id="words">
     {% for w in translations%}
-    <!-- TODO: find a way to display the original name to be cool -->
-    <option value="{{w['word']}}">{{w['word']}} / {{w['position']}} / {{w['other']}}</option>
+    <option>{{w['word']}}</option>
     {% endfor %}
-</select>
-
+</datalist>
+<div id="words_desc">
+     {% for w in translations%}
+    <button data-word="{{w['word']}}" onclick="replace_word_dst(event)">{{w['word']}} / {{w['position']}} / {{w['other']}}</button><br>
+    {% endfor %}
+</div>
 <br>
  <button class="btn btn-primary" id="search-submit" name="search-submit" type="button" value="Submit"
       onclick="search()">

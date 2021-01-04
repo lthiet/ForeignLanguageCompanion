@@ -1,10 +1,6 @@
 <form novalidate></form>
 <label for="ipa">IPA</label>
-<select id="ipa">
-    {% for e in ipas%}
-    <option value="{{e}}">{{e}}</option>
-    {% endfor %}
-</select>
+<input id="ipa" type="text" value="{{ipas}}">
 <br>
 {% if kind == 'vocabulary' %}
 <label for="word_usage">Word Usage</label>
