@@ -1,3 +1,3 @@
-{% for i in range(offset+1,offset+n+1) %}
-<img class="unselected" onclick="selectImage(event)" src="/image/{{word}}/{{i}}">
+{% for p in paths %}
+<img class="unselected" onclick="selectImage(event)" src="/image/{{p}}.jpg">
 {% endfor %}

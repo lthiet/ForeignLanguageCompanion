@@ -6,8 +6,7 @@ from azure.cognitiveservices.speech import AudioDataStream, SpeechConfig, Speech
 from azure.cognitiveservices.speech.audio import AudioOutputConfig
 from .config import cfg
 from .lang import target_to_voice_name
-import time
-from uuid import uuid4
+from .utils import generate_unique_token
 
 
 def create_ssml(text, target):
@@ -28,7 +27,7 @@ def generate_audio(text, target):
     tmp_dir = os.path.join(os.getcwd(), "app/data/audio")
     if not os.path.exists(tmp_dir):
         os.mkdir(tmp_dir)
-    unique_id = f'{target}-{str(int(time.time())) + str(uuid4())}'
+    unique_id = f'audio-{target}-{generate_unique_token()}'
     path = os.path.join(
         tmp_dir, unique_id + '.wav')
 

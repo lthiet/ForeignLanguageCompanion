@@ -1,10 +1,10 @@
 from .config import cfg
 from bing_image_downloader import downloader
-from .config import cfg
 from PIL import Image
 from io import BytesIO
 import requests
 import os
+from .utils import generate_unique_token
 
 has_api = True
 try:
@@ -24,8 +24,7 @@ def download_image(word, target=None, offset=0, n=10):
                   "license": "All",
                   "offset": offset,
                   "setLang": target,
-                  # TODO: change this to any language
-                  "mkt": "de-DE",
+                  "mkt": target,
                   "count": n,
                   }
         response = requests.get(url, headers=headers, params=params)
@@ -33,14 +32,19 @@ def download_image(word, target=None, offset=0, n=10):
         search_results = response.json()
         thumbnail_urls = [img["thumbnailUrl"]
                           for img in search_results["value"][:n]]
+        id_list = []
         for i, turl in enumerate(thumbnail_urls):
             image_data = requests.get(turl)
             im = Image.open(BytesIO(image_data.content))
-            path = os.path.join(os.getcwd(), "app/data/images/",
-                                word)
+            path = os.path.join(os.getcwd(), "app/data/images/")
             if not os.path.exists(path):
                 os.makedirs(path, exist_ok=True)
-            im.save(os.path.join(path, f"Image_{i+1+int(offset)}.jpg"), "JPEG")
+            unique_id = f"image-{target}-{generate_unique_token()}"
+            im_path = os.path.join(
+                path, unique_id + ".jpg")
+            im.save(im_path, "JPEG")
+            id_list.append(unique_id)
+        return id_list
     else:
         downloader.download(word, limit=5,  output_dir='app/data/images',
                             adult_filter_off=True, force_replace=False, timeout=1)

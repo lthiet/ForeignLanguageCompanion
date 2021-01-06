@@ -57,12 +57,10 @@ def vocabulary_search():
     return render_template('search_result.html', kind="vocabulary", **result)
 
 
-@app.route('/image/<word>/<i>')
-def vocabulary_image(word, i):
-    path = os.path.join(os.getcwd(), f'app/data/images/{word}/')
-    for infile in glob.glob(os.path.join(path, f'Image_{i}.*')):
-        # TODO: there should be only one
-        return send_file(infile)
+@app.route('/image/<id>')
+def get_image(id):
+    path = os.path.join(os.getcwd(), f'app/data/images/{id}')
+    return send_file(path)
 
 
 @app.route('/vocabulary/add')
@@ -112,12 +110,14 @@ def image_search():
     offset = int(request.args.get('offset'))
     target = request.args.get('target')
     n = 5
-    download_image(word, target=target, offset=offset, n=n)
+    paths = download_image(word, target=target, offset=offset, n=n)
     params = {
         "word": word,
         "n": n,
-        "offset": offset
+        "offset": offset,
+        "paths": paths
     }
+    print(paths)
     return render_template('image_search_result.html', **params)
 
 
