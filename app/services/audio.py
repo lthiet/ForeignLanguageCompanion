@@ -6,6 +6,8 @@ from azure.cognitiveservices.speech import AudioDataStream, SpeechConfig, Speech
 from azure.cognitiveservices.speech.audio import AudioOutputConfig
 from .config import cfg
 from .lang import target_to_voice_name
+import time
+from uuid import uuid4
 
 
 def create_ssml(text, target):
@@ -26,7 +28,9 @@ def generate_audio(text, target):
     tmp_dir = os.path.join(os.getcwd(), "app/data/audio")
     if not os.path.exists(tmp_dir):
         os.mkdir(tmp_dir)
-    path = os.path.join(tmp_dir, f'{target}-{text}.wav')
+    unique_id = f'{target}-{str(int(time.time())) + str(uuid4())}'
+    path = os.path.join(
+        tmp_dir, unique_id + '.wav')
 
     # query the API
     speech_config = SpeechConfig(
@@ -37,7 +41,8 @@ def generate_audio(text, target):
     audio_config = AudioOutputConfig(filename=path)
     synthesizer = SpeechSynthesizer(
         speech_config=speech_config, audio_config=audio_config)
-    result = synthesizer.speak_ssml(ssml_string)
+    synthesizer.speak_ssml(ssml_string)
+    return unique_id
 
 
 def download_audio(recordings):

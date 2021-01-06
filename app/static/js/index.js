@@ -25,6 +25,7 @@ function search() {
     },
     function (data) {
       $("#result_search").html(data);
+      $("#load_image_btn").click();
     }
   );
 }

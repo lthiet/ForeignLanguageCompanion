@@ -5,11 +5,10 @@ import collections
 import random
 
 # Get list of speaker
-speakers = json.loads(requests.get(
-    "https://eastus.tts.speech.microsoft.com/cognitiveservices/voices/list", headers={
+speakers = json.loads(requests.get("https://westeurope.tts.speech.microsoft.com/cognitiveservices/voices/list", headers={
+    "Authorization": "Bearer " + get_token()
+}).content)
 
-        "Authorization": "Bearer " + get_token()
-    }).content)
 mapping_of_speakers = collections.defaultdict(list)
 for e in speakers:
     if e["VoiceType"] == "Neural":

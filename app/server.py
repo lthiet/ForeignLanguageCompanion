@@ -125,14 +125,13 @@ def image_search():
 def audio_add():
     word = request.args.get('word')
     target = request.args.get('target')
-    generate_audio(word, target)
-    path = f"/audio/{target}/{word}"
+    path = generate_audio(word, target)
     return render_template('add_audio_result.html', path=path)
 
 
-@app.route("/audio/<target>/<word>")
-def audio(target, word):
-    path = os.path.join(os.getcwd(), "app/data/audio", f"{target}-{word}.wav")
+@app.route("/audio/<id>")
+def audio(id):
+    path = os.path.join(os.getcwd(), "app/data/audio", f"{id}.wav")
     return send_file(path)
 
 

@@ -12,7 +12,6 @@ def add(kind, **params):
 
     if kind == 'vocabulary':
         anki = {
-
             "note": {
                 "deckName": params['deck'],
                 "modelName": "2. Picture Words",
@@ -25,7 +24,6 @@ def add(kind, **params):
                 "options": {
                     "allowDuplicate": True,
                 },
-
                 "tags": [],
                 "audio": [{
                     "url": params['recording'],
