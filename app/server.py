@@ -14,6 +14,7 @@ from services.image import download_image
 from services.lang import lang_code
 from services.audio import generate_audio
 from services.sentence import process_sentence, get_abstract_word
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'abcd'
 bootstrap = Bootstrap(app)
@@ -117,7 +118,6 @@ def image_search():
         "offset": offset,
         "paths": paths
     }
-    print(paths)
     return render_template('image_search_result.html', **params)
 
 

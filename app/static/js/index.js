@@ -223,3 +223,20 @@ function searchAbstractWord() {
 function replace_word_dst(event) {
   $("#word_dst").val(event.target.getAttribute("data-word"));
 }
+
+function pasteWatch() {
+  const sel = "#image";
+  $(sel)
+    .pastableNonInputable()
+    .off("pasteImage")
+    .on("pasteImage", function (e, data) {
+      $("<img />")
+        .attr("src", data.dataURL)
+        .attr("onclick", "selectImage(event)")
+        .addClass("selected")
+        .appendTo(sel);
+      console.log(data);
+    });
+}
+
+setInterval(pasteWatch, 500);

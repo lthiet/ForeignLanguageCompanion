@@ -1,6 +1,37 @@
+from enum import unique
 from .anki import invoke
+from .utils import generate_unique_token
 import os
 import shutil
+import re
+import base64
+from mimetypes import guess_extension
+
+
+def fetch_image(path):
+    # Copy pasted images
+    data_pat = r"data:(image\/.*);base64,(.*)"
+    match = re.search(data_pat, path)
+    if (not match == None) and len(match.groups()) > 1:
+        ext = guess_extension(match[1])
+        data = match[2].encode()
+        unique_id = 'imagecp-' + generate_unique_token() + ext
+        with open(os.path.join(os.getcwd(), 'app/data/images', unique_id), mode='wb') as f:
+            f.write(base64.decodebytes(data))
+            return 'http://127.0.0.1:5000/image/' + unique_id
+    else:
+        return path
+
+
+def create_param_picture(path):
+    url = fetch_image(path)
+    return {
+        "url": url,
+        "filename": url.strip('/')[-1],
+        "fields": [
+            "Picture"
+        ]
+    }
 
 
 def add(kind, **params):
@@ -32,13 +63,9 @@ def add(kind, **params):
                         "Pronunciation (Recording and/or IPA)"
                     ]
                 }] if has_recording else None,
-                "picture": [{
-                    "url": url,
-                    "filename": url.strip('/')[-1],
-                    "fields": [
-                        "Picture"
-                    ]
-                } for url in params['images']]
+                "picture": [
+                    create_param_picture(url)
+                    for url in params['images']]
             }
         }
     elif kind == 'pronunciation':
@@ -62,13 +89,9 @@ def add(kind, **params):
                         "Recording of the Word (/IPA)"
                     ]
                 }] if has_recording else None,
-                "picture": [{
-                    "url": url,
-                    "filename": url.strip('/')[-1],
-                    "fields": [
-                        "Picture of the example word"
-                    ]
-                } for url in params['images']]
+                "picture": [
+                    create_param_picture(url)
+                    for url in params['images']]
             }
         }
     elif kind == 'sentences':
@@ -91,13 +114,9 @@ def add(kind, **params):
                         "- Extra Info (Pronunciation, personal connections, conjugations, etc)"
                     ]
                 }] if has_recording else None,
-                "picture": [{
-                    "url": url,
-                    "filename": url.strip('/')[-1],
-                    "fields": [
-                        "Front (Picture)"
-                    ]
-                } for url in params['images']]
+                "picture": [
+                    create_param_picture(url)
+                    for url in params['images']]
             }
         }
 
