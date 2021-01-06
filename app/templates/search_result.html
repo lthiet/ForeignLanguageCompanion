@@ -12,7 +12,7 @@
 <br>
 {% endif %}
 <label>Recording</label>
-<button onclick="addAudio()">Add Neural Audio</button>
+<button id="load_audio_btn" onclick="addAudio()">Add Neural Audio</button>
 <select onchange="playAudio()" id="recording">
     {% for e in recordings%}
     <option value="{{e}}">{{e}}</option>

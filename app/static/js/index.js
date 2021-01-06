@@ -26,6 +26,9 @@ function search() {
     function (data) {
       $("#result_search").html(data);
       $("#load_image_btn").click();
+      if ($("#recording option").length < 1) {
+        $("#load_image_btn").click();
+      }
     }
   );
 }
