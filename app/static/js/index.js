@@ -27,7 +27,7 @@ function search() {
       $("#result_search").html(data);
       $("#load_image_btn").click();
       if ($("#recording option").length < 1) {
-        $("#load_image_btn").click();
+        $("#load_audio_btn").click();
       }
     }
   );
@@ -105,6 +105,9 @@ function pronunciate() {
     },
     function (data) {
       $("#result_search").html(data);
+      if ($("#recording option").length < 1) {
+        $("#load_audio_btn").click();
+      }
     }
   );
 }
