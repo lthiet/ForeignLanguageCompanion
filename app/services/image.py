@@ -5,12 +5,37 @@ from io import BytesIO
 import requests
 import os
 from .utils import generate_unique_token
+import pybase64
+
 
 has_api = True
 try:
     cfg['image']['key']
 except:
     has_api = False
+
+MAX_SIZE = (600, 600)
+
+
+def get_images_path(unique_id):
+    path = os.path.join(os.getcwd(), "app/data/images/")
+    if not os.path.exists(path):
+        os.makedirs(path, exist_ok=True)
+    im_path = os.path.join(
+        path, unique_id)
+    return im_path
+
+
+def save_image(data64):
+    header, encoded = data64.split(",", 1)
+    unique_id = f"image-copypaste-{generate_unique_token()}"
+    im_path = get_images_path(unique_id)
+    data = pybase64.b64decode(encoded, validate=True)
+    im = Image.open(BytesIO(data))
+    im = im.convert('RGB')
+    im.thumbnail(MAX_SIZE, Image.ANTIALIAS)
+    im.save(im_path, 'JPEG')
+    return unique_id
 
 
 def download_image(word, target=None, offset=0, n=10):
@@ -36,12 +61,9 @@ def download_image(word, target=None, offset=0, n=10):
         for i, turl in enumerate(thumbnail_urls):
             image_data = requests.get(turl)
             im = Image.open(BytesIO(image_data.content))
-            path = os.path.join(os.getcwd(), "app/data/images/")
-            if not os.path.exists(path):
-                os.makedirs(path, exist_ok=True)
             unique_id = f"image-{target}-{generate_unique_token()}"
-            im_path = os.path.join(
-                path, unique_id + ".jpg")
+            im_path = get_images_path(unique_id)
+            im.thumbnail(MAX_SIZE, Image.ANTIALIAS)
             im.save(im_path, "JPEG")
             id_list.append(unique_id)
         return id_list

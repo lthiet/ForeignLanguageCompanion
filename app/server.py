@@ -1,3 +1,4 @@
+from base64 import b64decode
 from flask_bootstrap import Bootstrap
 from flask import Flask
 from flask import render_template
@@ -10,7 +11,7 @@ from services.translate import translate_word
 from services.search import search
 from services.add import add
 from services.anki import invoke
-from services.image import download_image
+from services.image import download_image, save_image
 from services.lang import lang_code
 from services.audio import generate_audio
 from services.sentence import process_sentence, get_abstract_word
@@ -116,9 +117,17 @@ def image_search():
         "word": word,
         "n": n,
         "offset": offset,
-        "paths": paths
+        "paths": paths,
+        "from_copy": False
     }
     return render_template('image_search_result.html', **params)
+
+
+@app.route("/image/upload", methods=['POST'])
+def image_upload():
+    data64 = request.get_data().decode()
+    img_url = save_image(data64)
+    return render_template('image_search_result.html', paths=[img_url], from_copy=True)
 
 
 @app.route("/audio/add")

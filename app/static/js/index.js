@@ -230,12 +230,15 @@ function pasteWatch() {
     .pastableNonInputable()
     .off("pasteImage")
     .on("pasteImage", function (e, data) {
-      $("<img />")
-        .attr("src", data.dataURL)
-        .attr("onclick", "selectImage(event)")
-        .addClass("selected")
-        .appendTo(sel);
-      console.log(data);
+      $.post("/image/upload", data.dataURL, function (res) {
+        $(sel).append(res);
+      });
+      // $("<img />")
+      //   .attr("src", data.dataURL)
+      //   .attr("onclick", "selectImage(event)")
+      //   .addClass("selected")
+      //   .appendTo(sel);
+      // console.log(data);
     });
 }
 

@@ -23,13 +23,18 @@ def fetch_image(path):
         return path
 
 
-def create_param_picture(path):
+def create_param_picture(path, kind):
     url = fetch_image(path)
+    field_name = {
+        "vocabulary": "Picture",
+        "pronunciation": "Picture of the example word",
+        "sentences": "Front (Picture)",
+    }
     return {
         "url": url,
         "filename": url.strip('/')[-1],
         "fields": [
-            "Picture"
+            field_name[kind]
         ]
     }
 
@@ -53,7 +58,7 @@ def add(kind, **params):
                     "Test Spelling? (y = yes, blank = no)": "y" if params['spelling'] else ""
                 },
                 "options": {
-                    "allowDuplicate": True,
+                    "allowduplicate": True,
                 },
                 "tags": [],
                 "audio": [{
@@ -64,7 +69,7 @@ def add(kind, **params):
                     ]
                 }] if has_recording else None,
                 "picture": [
-                    create_param_picture(url)
+                    create_param_picture(url, kind)
                     for url in params['images']]
             }
         }
@@ -90,7 +95,7 @@ def add(kind, **params):
                     ]
                 }] if has_recording else None,
                 "picture": [
-                    create_param_picture(url)
+                    create_param_picture(url, kind)
                     for url in params['images']]
             }
         }
@@ -106,6 +111,9 @@ def add(kind, **params):
                     "- The full sentence (no words blanked out)": params["text_full"],
                     # "• Make 2 cards? (\"y\" = yes, blank = no)": "y"
                 },
+                "options": {
+                    "allowDuplicate": True,
+                },
                 "tags": [],
                 "audio": [{
                     "url": params['recording'],
@@ -115,7 +123,7 @@ def add(kind, **params):
                     ]
                 }] if has_recording else None,
                 "picture": [
-                    create_param_picture(url)
+                    create_param_picture(url, kind)
                     for url in params['images']]
             }
         }

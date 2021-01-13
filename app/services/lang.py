@@ -47,4 +47,6 @@ def target_to_voice_name(target):
         target = 'zh'
 
     avai_speakers = mapping_of_speakers[target]
-    return random.choice(avai_speakers)["name"]
+    speaker = random.choice(avai_speakers)["name"]
+    print(speaker)
+    return speaker
