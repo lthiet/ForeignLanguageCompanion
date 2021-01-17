@@ -58,7 +58,7 @@ def add(kind, **params):
                     "Test Spelling? (y = yes, blank = no)": "y" if params['spelling'] else ""
                 },
                 "options": {
-                    "allowduplicate": True,
+                    "allowDuplicate": True,
                 },
                 "tags": [],
                 "audio": [{

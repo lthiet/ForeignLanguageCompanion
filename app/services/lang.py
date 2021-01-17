@@ -50,3 +50,16 @@ def target_to_voice_name(target):
     speaker = random.choice(avai_speakers)["name"]
     print(speaker)
     return speaker
+
+
+def lang_to_mkt(target):
+    mapping = {
+        'tr': 'tr-TR',
+        'de': 'de-DE',
+        'es': 'es-ES',
+    }
+
+    try:
+        return mapping['target']
+    except:
+        return target
