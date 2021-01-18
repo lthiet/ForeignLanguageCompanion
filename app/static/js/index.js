@@ -44,7 +44,7 @@ function add_vocabulary() {
       spelling: $("#spelling").val(),
       images: $(".selected")
         .map(function () {
-          return this.src;
+          return this.dataset.content;
         })
         .get(),
       deck: $("#deck").val(),

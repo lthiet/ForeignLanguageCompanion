@@ -49,6 +49,7 @@ def download_images_azure(word, target=None, offset=0, n=10):
     headers = {"Ocp-Apim-Subscription-Key": key}
     # TODO : some parameters are interesting here https://docs.microsoft.com/en-us/bing/search-apis/bing-image-search/reference/query-parameters, for example tags
     print(target)
+    print(lang_to_mkt(target))
     params = {"q": word,
               "license": "All",
               "offset": offset,
@@ -59,8 +60,15 @@ def download_images_azure(word, target=None, offset=0, n=10):
     response = requests.get(url, headers=headers, params=params)
     response.raise_for_status()
     search_results = response.json()
-    thumbnail_urls = [img["thumbnailUrl"]
-                      for img in search_results["value"][:n]]
+    paths = []
+    for i in range(n):
+        paths.append({
+            "thumbnail_url": search_results["value"][i]["thumbnailUrl"],
+            "content_url": search_results["value"][i]["contentUrl"],
+        })
+    return paths
+
+    # if I want to save the images, but do I really want to?
     id_list = []
     for i, turl in enumerate(thumbnail_urls):
         image_data = requests.get(turl)

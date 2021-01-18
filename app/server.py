@@ -109,10 +109,11 @@ def pronunciation_add():
 @app.route("/image_search")
 def image_search():
     word = request.args.get('word')
-    offset = int(request.args.get('offset'))
+    offset = int(request.args.get('offset')) + 1
     target = request.args.get('target')
-    n = 5
-    paths = download_image(word, target=target, offset=offset, n=n)
+    n = 100
+    paths = download_image(
+        word, target=target, offset=offset, n=n)
     params = {
         "word": word,
         "n": n,
