@@ -7,16 +7,19 @@ from flask import send_file
 import glob
 import os
 import pandas as pd
-from services.translate import translate_word
-from services.search import search
-from services.add import add
-from services.anki import invoke
-from services.image import download_image, save_image
-from services.lang import lang_code
-from services.audio import generate_audio
-from services.sentence import process_sentence, get_abstract_word
+from app.services.translate import translate_word
+from app.services.search import search
+from app.services.add import add
+from app.services.anki import invoke
+from app.services.image import download_image, save_image
+from app.services.lang import lang_code
+from app.services.audio import generate_audio
+from app.services.sentence import process_sentence, get_abstract_word
 
-app = Flask(__name__)
+app = Flask(__name__,
+            template_folder='app/templates',
+            static_folder='app/static'
+            )
 app.config['SECRET_KEY'] = 'abcd'
 bootstrap = Bootstrap(app)
 
@@ -109,7 +112,7 @@ def pronunciation_add():
 @app.route("/image_search")
 def image_search():
     word = request.args.get('word')
-    offset = int(request.args.get('offset')) + 1
+    offset = int(request.args.get('offset'))
     target = request.args.get('target')
     n = 100
     paths = download_image(
@@ -127,8 +130,12 @@ def image_search():
 @app.route("/image/upload", methods=['POST'])
 def image_upload():
     data64 = request.get_data().decode()
-    img_url = save_image(data64)
-    return render_template('image_search_result.html', paths=[img_url], from_copy=True)
+    img_url = 'http://localhost:5000/image/' + save_image(data64)
+    path = {
+        "thumbnail_url": img_url,
+        "content_url": img_url,
+    }
+    return render_template('image_search_result.html', paths=[path], from_copy=True)
 
 
 @app.route("/audio/add")
@@ -139,9 +146,9 @@ def audio_add():
     return render_template('add_audio_result.html', path=path)
 
 
-@app.route("/audio/<id>")
-def audio(id):
-    path = os.path.join(os.getcwd(), "app/data/audio", f"{id}.wav")
+@app.route("/audio/<fn>")
+def audio(fn):
+    path = os.path.join(os.getcwd(), "app/data/audio", fn)
     return send_file(path)
 
 
@@ -182,5 +189,4 @@ def abstract_word():
     target = req.get("target")
     detail = req.get("detail")
     res = get_abstract_word(word_src, word_dst, target, detail)
-    print(res)
     return sentences(example=res["examples"][0] if len(res["examples"]) > 0 else '', definition=res["definition"])

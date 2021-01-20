@@ -231,7 +231,7 @@ function pasteWatch() {
     .off("pasteImage")
     .on("pasteImage", function (e, data) {
       $.post("/image/upload", data.dataURL, function (res) {
-        $(sel).append(res);
+        $(sel).prepend(res);
       });
       // $("<img />")
       //   .attr("src", data.dataURL)

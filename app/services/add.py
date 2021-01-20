@@ -1,6 +1,6 @@
 from enum import unique
-from .anki import invoke
-from .utils import generate_unique_token
+from app.services.anki import invoke
+from app.services.utils import generate_unique_token
 import os
 import shutil
 import re
@@ -30,14 +30,15 @@ def create_param_picture(path, kind):
         "pronunciation": "Picture of the example word",
         "sentences": "Front (Picture)",
     }
+
     return {
         "url": url,
-        "filename": url.strip('/')[-1],
+        # "filename": url.strip('/')[-1],
+        "filename": generate_unique_token() + '.jpg',
         "fields": [
             field_name[kind]
         ]
     }
-
 
 def add(kind, **params):
     has_recording = not params['recording'] == ''
@@ -63,7 +64,7 @@ def add(kind, **params):
                 "tags": [],
                 "audio": [{
                     "url": params['recording'],
-                    "filename": params['recording'].strip('/')[-1],
+                    "filename": generate_unique_token() + '.mp3',
                     "fields": [
                         "Pronunciation (Recording and/or IPA)"
                     ]
@@ -89,7 +90,7 @@ def add(kind, **params):
                 "tags": [],
                 "audio": [{
                     "url": params['recording'],
-                    "filename": params['recording'].strip('/')[-1],
+                    "filename": generate_unique_token() + '.mp3',
                     "fields": [
                         "Recording of the Word (/IPA)"
                     ]
@@ -117,7 +118,7 @@ def add(kind, **params):
                 "tags": [],
                 "audio": [{
                     "url": params['recording'],
-                    "filename": params['recording'].strip('/')[-1],
+                    "filename": generate_unique_token() + '.mp3',
                     "fields": [
                         "- Extra Info (Pronunciation, personal connections, conjugations, etc)"
                     ]

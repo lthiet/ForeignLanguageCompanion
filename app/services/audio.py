@@ -4,9 +4,11 @@ from urllib.request import urlopen
 import azure.cognitiveservices.speech as speechsdk
 from azure.cognitiveservices.speech import AudioDataStream, SpeechConfig, SpeechSynthesizer, SpeechSynthesisOutputFormat
 from azure.cognitiveservices.speech.audio import AudioOutputConfig
-from .config import cfg
-from .lang import target_to_voice_name
-from .utils import generate_unique_token
+from app.services.config import cfg
+from app.services.lang import target_to_voice_name
+from app.services.utils import generate_unique_token
+import subprocess
+from pathlib import Path
 
 
 def create_ssml(text, target):
@@ -27,9 +29,9 @@ def generate_audio(text, target):
     tmp_dir = os.path.join(os.getcwd(), "app/data/audio")
     if not os.path.exists(tmp_dir):
         os.mkdir(tmp_dir)
-    unique_id = f'audio-{target}-{generate_unique_token()}'
+    unique_id = f'audio-{target}-{generate_unique_token()}.mp3'
     path = os.path.join(
-        tmp_dir, unique_id + '.wav')
+        tmp_dir, unique_id)
 
     # query the API
     speech_config = SpeechConfig(
@@ -44,11 +46,15 @@ def generate_audio(text, target):
     return unique_id
 
 
-def download_audio(recordings):
-    for r in recordings:
-        tmp_dir = os.path.join(os.getcwd(), "app/data/audio")
-        if not os.path.exists(tmp_dir):
-            os.mkdir(tmp_dir)
-        path = os.path.join(tmp_dir, r.rsplit('/', 1)[-1])
-        with open(path, mode="wb") as f:
-            f.write(urlopen(r).read())
+def download_audio(recording):
+    tmp_dir = os.path.join(os.getcwd(), "app/data/audio")
+    if not os.path.exists(tmp_dir):
+        os.mkdir(tmp_dir)
+    path = os.path.join(tmp_dir, recording.rsplit('/', 1)[-1])
+    with open(path, mode="wb") as f:
+        f.write(urlopen(recording).read())
+    new_path, _ = os.path.splitext(path)
+    new_path = Path(new_path).with_suffix('.mp3')
+    subprocess.run(["ffmpeg", "-loglevel", "panic", "-y", "-i", path, new_path])
+    os.remove(path)
+    return new_path.name

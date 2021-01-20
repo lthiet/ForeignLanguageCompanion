@@ -5,9 +5,9 @@ import json
 import os
 from pathlib import Path
 from bing_image_downloader import downloader
-from .image import download_image
-from .lang import code_to_name
-from .audio import download_audio
+from app.services.image import download_image
+from app.services.lang import code_to_name
+from app.services.audio import download_audio
 import string
 
 
@@ -36,7 +36,7 @@ def search(word, target, kind='vocabulary'):
         "word": word,
         # "ipas": [e.replace(',', '') for e in result["pronunciations"]["text"][0].split(' ')[1:]] if has_ipa else '',
         "ipas": ', '.join(result["pronunciations"]["text"]),
-        "recordings": ["https:" + e for e in result['pronunciations']['audio']] if has_recording else ''
+        "recordings": ['http://localhost:5000/audio/' + download_audio('http:' + e) for e in result['pronunciations']['audio']] if has_recording else ''
     }
 
     # TODO: is this actually needed?
@@ -55,6 +55,4 @@ def search(word, target, kind='vocabulary'):
         answer['word_usages'] = [e["partOfSpeech"] + ": " + e["text"][0]
                                  for e in result["definitions"]]
 
-    if has_recording:
-        download_audio(answer['recordings'])
     return answer

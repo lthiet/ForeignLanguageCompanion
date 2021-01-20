@@ -1,4 +1,4 @@
-from .config import cfg, get_token
+from app.services.config import cfg, get_token
 import requests
 import json
 import collections

@@ -1,14 +1,14 @@
-from services.lang import lang_to_mkt
+from app.services.lang import lang_to_mkt
+from app.services.config import cfg
+from app.services.utils import generate_unique_token
 import trace
 from requests.models import HTTPError
 import traceback
-from .config import cfg
 from bing_image_downloader import downloader
 from PIL import Image
 from io import BytesIO
 import requests
 import os
-from .utils import generate_unique_token
 import pybase64
 
 
@@ -32,7 +32,7 @@ def get_images_path(unique_id):
 
 def save_image(data64):
     header, encoded = data64.split(",", 1)
-    unique_id = f"image-copypaste-{generate_unique_token()}"
+    unique_id = f"image-copypaste-{generate_unique_token()}.jpg"
     im_path = get_images_path(unique_id)
     data = pybase64.b64decode(encoded, validate=True)
     im = Image.open(BytesIO(data))
@@ -44,18 +44,19 @@ def save_image(data64):
 
 def download_images_azure(word, target=None, offset=0, n=10):
     key = cfg['image']['key']
-    location = cfg['image']['location']
     url = "https://api.bing.microsoft.com/v7.0/images/search"
-    headers = {"Ocp-Apim-Subscription-Key": key}
+    headers = {
+        "Ocp-Apim-Subscription-Key": key,
+        "BingAPIs-Market": lang_to_mkt(target)
+    }
     # TODO : some parameters are interesting here https://docs.microsoft.com/en-us/bing/search-apis/bing-image-search/reference/query-parameters, for example tags
-    print(target)
-    print(lang_to_mkt(target))
     params = {"q": word,
               "license": "All",
               "offset": offset,
               "setLang": target,
               "mkt": lang_to_mkt(target),
               "count": n,
+              # "safeSearch": "Strict" # so tired of porn showing up...
               }
     response = requests.get(url, headers=headers, params=params)
     response.raise_for_status()

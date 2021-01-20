@@ -3,8 +3,8 @@ import requests
 import json
 from bs4 import BeautifulSoup
 import string
-from .config import cfg
-from .lang import code_to_name
+from app.services.config import cfg
+from app.services.lang import code_to_name
 import re
 
 

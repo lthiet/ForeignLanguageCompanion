@@ -1,4 +1,4 @@
-from .config import cfg, get_header
+from app.services.config import cfg, get_header
 import requests
 import json
 
