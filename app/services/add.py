@@ -6,6 +6,7 @@ import shutil
 import re
 import base64
 from mimetypes import guess_extension
+from threading import Thread
 
 
 def fetch_image(path):
@@ -128,6 +129,12 @@ def add(kind, **params):
                     for url in params['images']]
             }
         }
+
+
+    thread = Thread(target=invoke,args=("addNote",),kwargs=anki)
+    thread.start()
+    return "Done"
+
 
     note_id = invoke("addNote", **anki)
 
