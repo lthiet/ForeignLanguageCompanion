@@ -34,24 +34,11 @@ def translate_cambridge(word, target=None, target_name=None):
         l.append({
             "position": category,
             # TODO: deal with synonyms
-            "word": translation.split(',')[0],
+            "word": translation,
             "other": other
         })
 
     return l
-
-
-def translate_de(word):
-    def remove_determiner(text):
-        # Der, Die, Das
-        return text[4:]
-
-    def noun_postprocess(entry):
-        if entry['position'] in ['noun', 'noun_plural']:
-            entry["word"] = remove_determiner(entry["word"])
-        return entry
-
-    return [noun_postprocess(e) for e in translate_cambridge(word, "de")]
 
 
 def translate_tr(word):
@@ -122,9 +109,7 @@ def translate_azure(word, target):
 
 
 def translate_word(word, target, specification=None):
-    if target == 'de':
-        return translate_de(word)
-    elif target == 'tr':
+    if target == 'tr':
         return translate_tr(word)
     elif target == 'zh-Hans':
         return translate_cambridge(word, target_name='chinese-simplified')
@@ -132,7 +117,7 @@ def translate_word(word, target, specification=None):
         return translate_cambridge(word, target_name='portuguese')
     elif target == 'ms':
         return translate_cambridge(word, target_name='malaysian')
-    elif target in ['ja', 'ko', 'ar', 'es', 'fr', 'id', 'it', 'pl', 'ca', 'cs', 'da', 'nb', 'ru', 'th', 'vi']:
+    elif target in ['ja', 'ko', 'ar', 'es', 'fr', 'id', 'it', 'pl', 'ca', 'cs', 'da', 'nb', 'ru', 'th', 'vi','de']:
         return translate_cambridge(word, target)
     # Last resort, try with Microsoft Translator API
     else:

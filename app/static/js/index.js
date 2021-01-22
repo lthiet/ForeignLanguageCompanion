@@ -5,8 +5,7 @@ function clearAll() {
 function translate() {
   clearAll();
   $.get(
-    "/vocabulary/translate",
-    {
+    "/vocabulary/translate", {
       word: $("#word_src").val(),
       target: $("#target").val(),
     },
@@ -18,8 +17,7 @@ function translate() {
 
 function search() {
   $.get(
-    "/vocabulary/search",
-    {
+    "/vocabulary/search", {
       word: $("#word_dst").val(),
       target: $("#target").val(),
     },
@@ -33,10 +31,39 @@ function search() {
   );
 }
 
+function running_status_element(ident) {
+  var element = document.createElement("div");
+  element.id = ident
+  element.innerHTML = ident
+  element.classList.add("running");
+  var interval;
+  var check_thread_status = function () {
+    $.get(
+      "/thread_status/" + ident, {},
+      function (response) {
+        if (response == 'running') {
+          $("#" + ident).attr("class", "running");
+        } else {
+          $("#" + ident).attr("class", "done");
+          setTimeout(function () {
+            clearInterval(interval);
+            $("#" + ident).remove();
+          }, 15000);
+        }
+      }
+    )
+  }
+  interval = setInterval(
+    check_thread_status,
+    2000)
+  return element
+}
+
+
+
 function add_vocabulary() {
   $.get(
-    "/vocabulary/add",
-    {
+    "/vocabulary/add", {
       word: $("#word_dst").val(),
       ipa: $("#ipa").val(),
       word_usage: $("#word_usage").val(),
@@ -51,7 +78,7 @@ function add_vocabulary() {
       deck: $("#deck").val(),
     },
     function (data) {
-      $("#result_add").html(data);
+      $("#thread_status").append(running_status_element(data));
       clearAll();
     }
   );
@@ -59,8 +86,7 @@ function add_vocabulary() {
 
 function add_pronunciation() {
   $.get(
-    "/pronunciation/add",
-    {
+    "/pronunciation/add", {
       word: $("#word_dst").val(),
       spelling: $("#spelling").val(),
       ipa: $("#ipa").val(),
@@ -99,8 +125,7 @@ function selectImage(event) {
 function pronunciate() {
   clearAll();
   $.get(
-    "/pronunciation/search",
-    {
+    "/pronunciation/search", {
       word: $("#word_dst").val(),
       target: $("#target").val(),
     },
@@ -115,8 +140,7 @@ function pronunciate() {
 
 function word_list() {
   $.get(
-    "/vocabulary/word_list",
-    {
+    "/vocabulary/word_list", {
       word_list: $("#word_list").val(),
     },
     function (data) {
@@ -134,8 +158,7 @@ function replace_word_src(event) {
 function load_image() {
   var offset = $("#image img").length;
   $.get(
-    "/image_search",
-    {
+    "/image_search", {
       word: $("#word_dst").val(),
       target: $("#target").val(),
       offset: offset,
@@ -148,8 +171,7 @@ function load_image() {
 
 function addAudio() {
   $.get(
-    "/audio/add",
-    {
+    "/audio/add", {
       word: $("#word_dst").val(),
       target: $("#target").val(),
     },
@@ -184,8 +206,7 @@ function selectSentence() {
 
 function add_sentences() {
   $.get(
-    "/sentences/add/",
-    {
+    "/sentences/add/", {
       text_full: $("#word_dst").val(),
       recording: $("#recording").val(),
       front: $("#front").val(),
@@ -204,10 +225,10 @@ function add_sentences() {
     }
   );
 }
+
 function searchAbstractWord() {
   $.get(
-    "/vocabulary/abstract_word/",
-    {
+    "/vocabulary/abstract_word/", {
       word_src: $("#word_src").val(),
       word_dst: $("#word_dst").val(),
       detail: $("#word_dst option:selected").text(),

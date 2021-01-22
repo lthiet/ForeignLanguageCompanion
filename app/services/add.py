@@ -7,6 +7,7 @@ import re
 import base64
 from mimetypes import guess_extension
 from threading import Thread
+import flask
 
 
 def fetch_image(path):
@@ -41,7 +42,7 @@ def create_param_picture(path, kind):
         ]
     }
 
-def add(kind, **params):
+def send_add_request(kind, **params):
     has_recording = not params['recording'] == ''
     anki = None
     # if the audio was generated locally
@@ -131,9 +132,7 @@ def add(kind, **params):
         }
 
 
-    thread = Thread(target=invoke,args=("addNote",),kwargs=anki)
-    thread.start()
-    return "Done"
+    return Thread(target=invoke,args=("addNote",),kwargs=anki)
 
 
     note_id = invoke("addNote", **anki)

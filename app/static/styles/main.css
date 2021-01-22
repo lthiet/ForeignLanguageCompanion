@@ -1,3 +1,6 @@
+body {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+}
 img {
   width: auto;
   height: auto;
@@ -21,17 +24,17 @@ img {
 }
 
 #left {
-  width: 80%;
-  background: grey;
+  width: 20%;
   height: 100%;
   float: left;
+  background: linear-gradient(90deg, #f8ff00 0%, #3ad59f 100%);
 }
 
 #right {
-  width: 20%;
+  width: 80%;
   height: 100%;
   float: right;
-  background: blue;
+  background: linear-gradient(90deg, #efd5ff 0%, #515ada 100%);
 }
 
 #choose_sentence_result {
@@ -48,4 +51,17 @@ img {
     rgba(252, 176, 69, 1) 100%
   );
   min-height: 200px;
+}
+
+.done, .running {
+  color: white;
+  padding: 7px;
+  border-bottom: 5px solid black
+}
+
+.done {
+  background-image: linear-gradient( 110.1deg,  rgba(34,126,34,1) 2.9%, rgba(168,251,60,1) 90.3% );
+}
+.running {
+  background-image: linear-gradient( 143.3deg,  rgba(216,27,96,1) 33.1%, rgba(237,107,154,1) 74.9% );
 }

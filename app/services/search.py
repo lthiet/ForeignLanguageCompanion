@@ -12,12 +12,6 @@ import string
 
 
 def search(word, target, kind='vocabulary'):
-    has_image_api = True
-    try:
-        image_key = cfg['image']['key']
-    except:
-        has_image_api = False
-
     parser = WiktionaryParser()
     # what happens if there are multiple results?
     result = parser.fetch(word, code_to_name(target).lower())

@@ -4,17 +4,18 @@ from flask import Flask
 from flask import render_template
 from flask import request
 from flask import send_file
-import glob
 import os
 import pandas as pd
 from app.services.translate import translate_word
 from app.services.search import search
-from app.services.add import add
+from app.services.add import send_add_request
 from app.services.anki import invoke
 from app.services.image import download_image, save_image
 from app.services.lang import lang_code
 from app.services.audio import generate_audio
 from app.services.sentence import process_sentence, get_abstract_word
+import threading
+threads = [threading.Thread]
 
 app = Flask(__name__,
             template_folder='app/templates',
@@ -73,7 +74,11 @@ def vocabulary_add():
     params = dict(request.args)
     params['images'] = request.args.getlist('images[]')
     params.pop('images[]', None)
-    return add('vocabulary', **params)
+    thread = send_add_request('vocabulary', **params)
+    thread.start()
+    threads.append(thread)
+    return str(thread.ident)
+
 
 
 @app.route('/vocabulary/word_list')
@@ -106,7 +111,7 @@ def pronunciation_add():
     params = dict(request.args)
     params['images'] = request.args.getlist('images[]')
     params.pop('images[]', None)
-    return add('pronunciation', **params)
+    return send_add_request('pronunciation', **params)
 
 
 @app.route("/image_search")
@@ -178,7 +183,7 @@ def sentences_add():
     params['text_hidden'] = process_sentence(text_full, text_part)
     params['images'] = request.args.getlist('images[]')
     params.pop('images[]', None)
-    return add('sentences', **params)
+    return send_add_request('sentences', **params)
 
 
 @app.route('/vocabulary/abstract_word/')
@@ -190,3 +195,14 @@ def abstract_word():
     detail = req.get("detail")
     res = get_abstract_word(word_src, word_dst, target, detail)
     return sentences(example=res["examples"][0] if len(res["examples"]) > 0 else '', definition=res["definition"])
+
+@app.route('/thread_status/<ident>')
+def check_thread_status(ident):
+    ident = int(ident)
+    for t in threads:
+        if t.ident == ident:
+            if t.is_alive():
+                return "running"
+            else:
+                return "done"
+    return "not found"
