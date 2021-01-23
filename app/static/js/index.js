@@ -48,7 +48,7 @@ function running_status_element(ident) {
           setTimeout(function () {
             clearInterval(interval);
             $("#" + ident).remove();
-          }, 15000);
+          }, 500);
         }
       }
     )

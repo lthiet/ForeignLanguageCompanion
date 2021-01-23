@@ -56,11 +56,12 @@ def translate_tr(word):
         if not done:
             l += r
 
+    # TODO: this is actually not needed
     def clean_up(entry):
         entry["word"] = remove_punctuation(entry["word"].lower())
         return entry
 
-    return [clean_up(e) for e in l]
+    return [e for e in l]
 
 
 def remove_punctuation(s):
