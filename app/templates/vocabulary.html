@@ -2,11 +2,26 @@
 
 <head>
   <title>Foreign Language Companion</title>
-  <script src="{{ url_for('static', filename='js/index.js') }}" type="text/javascript" defer></script>
-  <script src="{{ url_for('static', filename='js/paste.js') }}" type="text/javascript" defer></script>
+  <script
+    src="{{ url_for('static', filename='js/index.js') }}"
+    type="text/javascript"
+    defer
+  ></script>
+  <script
+    src="{{ url_for('static', filename='js/paste.js') }}"
+    type="text/javascript"
+    defer
+  ></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}" type="text/css" />
-  <link rel="shortcut icon" href="{{ url_for('static', filename='images/noel.gif') }}">
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='styles/main.css') }}"
+    type="text/css"
+  />
+  <link
+    rel="shortcut icon"
+    href="{{ url_for('static', filename='images/noel.gif') }}"
+  />
 </head>
 
 <body>
@@ -20,8 +35,14 @@
         {% endfor %}
       </select>
       <br />
-      <button class="btn btn-primary" id="search-submit" name="search-submit" type="button" value="Submit"
-        onclick="word_list()">
+      <button
+        class="btn btn-primary"
+        id="search-submit"
+        name="search-submit"
+        type="button"
+        value="Submit"
+        onclick="word_list()"
+      >
         Load word list
       </button>
       <div id="result_word_list"></div>
@@ -45,8 +66,18 @@
         <label>Word (in English)</label>
         <input id="word_src" placeholder="Write the word here" />
         <br />
-        <button class="btn btn-primary" id="search-submit" name="search-submit" type="button" value="Submit"
-          onclick="translate()">
+        <label>Check spelling?</label>
+        <input id="spelling" type="checkbox" />
+        <br>
+
+        <button
+          class="btn btn-primary"
+          id="search-submit"
+          name="search-submit"
+          type="button"
+          value="Submit"
+          onclick="translate()"
+        >
           Translate
         </button>
       </form>
@@ -54,6 +85,5 @@
       <div class="form_container" id="result_search"></div>
       <div class="form_container" id="result_add"></div>
     </div>
-
   </div>
 </body>

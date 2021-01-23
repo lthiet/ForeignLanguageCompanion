@@ -43,6 +43,7 @@ def create_param_picture(path, kind):
     }
 
 def send_add_request(kind, **params):
+    print(params['spelling'])
     has_recording = not params['recording'] == ''
     anki = None
     # if the audio was generated locally
@@ -58,7 +59,7 @@ def send_add_request(kind, **params):
                     "Word": params['word'],
                     "Gender, Personal Connection, Extra Info (Back side)": params['word_usage'],
                     "Pronunciation (Recording and/or IPA)": params['ipa'],
-                    "Test Spelling? (y = yes, blank = no)": "y" if params['spelling'] else ""
+                    "Test Spelling? (y = yes, blank = no)": "y" if params['spelling'] == "true" else ""
                 },
                 "options": {
                     "allowDuplicate": True,
