@@ -30,7 +30,7 @@ def search(word, target, kind='vocabulary'):
         "word": word,
         # "ipas": [e.replace(',', '') for e in result["pronunciations"]["text"][0].split(' ')[1:]] if has_ipa else '',
         "ipas": ', '.join(result["pronunciations"]["text"]),
-        "recordings": ['http://localhost:5000/audio/' + download_audio('http:' + e) for e in result['pronunciations']['audio']] if has_recording else ''
+        "recordings": [download_audio('http:' + e) for e in result['pronunciations']['audio']] if has_recording else ''
     }
 
     # TODO: is this actually needed?

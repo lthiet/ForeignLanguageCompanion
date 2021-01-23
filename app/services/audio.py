@@ -1,4 +1,5 @@
 
+from enum import unique
 import os
 from urllib.request import urlopen
 import azure.cognitiveservices.speech as speechsdk
@@ -50,7 +51,8 @@ def download_audio(recording):
     tmp_dir = os.path.join(os.getcwd(), "app/data/audio")
     if not os.path.exists(tmp_dir):
         os.mkdir(tmp_dir)
-    path = os.path.join(tmp_dir, recording.rsplit('/', 1)[-1])
+    unique_id = generate_unique_token()
+    path = os.path.join(tmp_dir, unique_id + ".ogg")
     with open(path, mode="wb") as f:
         f.write(urlopen(recording).read())
     new_path, _ = os.path.splitext(path)

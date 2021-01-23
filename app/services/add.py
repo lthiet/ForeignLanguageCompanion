@@ -43,7 +43,6 @@ def create_param_picture(path, kind):
     }
 
 def send_add_request(kind, **params):
-    print(params['spelling'])
     has_recording = not params['recording'] == ''
     anki = None
     # if the audio was generated locally
