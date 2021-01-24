@@ -1,33 +1,48 @@
-<!doctype html>
+<!DOCTYPE html>
 
 <head>
   <title>Foreign Language Companion</title>
-  <script src="{{ url_for('static', filename='js/index.js') }}" type="text/javascript" defer></script>
-  <script src="{{ url_for('static', filename='js/paste.js') }}" type="text/javascript" defer></script>
+  <script
+    src="{{ url_for('static', filename='js/index.js') }}"
+    type="text/javascript"
+    defer
+  ></script>
+  <script
+    src="{{ url_for('static', filename='js/paste.js') }}"
+    type="text/javascript"
+    defer
+  ></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}" type="text/css">
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='styles/main.css') }}"
+    type="text/css"
+  />
 </head>
 
 <body>
   <a href="/">Back</a>
+  <div id="thread_status"></div>
   <div id="definition" data-definition="{{definition}}"></div>
   <label>Deck:</label>
-  <select id=deck>
+  <select id="deck">
     {% for d in decks%}
     <option value="{{d}}">{{d}}</option>
     {% endfor %}
   </select>
-  <br>
+  <br />
   <label for="target">Target language:</label>
   <select id="target">
     {% for e in lang_code%}
     <option value="{{e['code']}}">{{e['name']}}</option>
     {% endfor %}
   </select>
-  <br>
+  <br />
   <label for="sentence">Sentence</label>
   <textarea id="word_dst" type="text" value="{{example}}"></textarea>
-  <button onclick="displaySentence()" id="display_sentence">Process sentence</button>
+  <button onclick="displaySentence()" id="display_sentence">
+    Process sentence
+  </button>
   <div id="choose_sentence_result"></div>
   <div id="choose_sentence_description"></div>
   <div id="select_sentence_result"></div>

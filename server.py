@@ -183,7 +183,12 @@ def sentences_add():
     params['text_hidden'] = process_sentence(text_full, text_part)
     params['images'] = request.args.getlist('images[]')
     params.pop('images[]', None)
-    return send_add_request('sentences', **params)
+
+    # TODO: factorize
+    thread =  send_add_request('sentences', **params)
+    thread.start()
+    threads.append(thread)
+    return str(thread.ident)
 
 
 @app.route('/vocabulary/abstract_word/')

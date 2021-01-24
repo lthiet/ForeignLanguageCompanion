@@ -60,7 +60,6 @@ function running_status_element(ident) {
 }
 
 
-
 function add_vocabulary() {
   $.get(
     "/vocabulary/add", {
@@ -198,6 +197,9 @@ function selectSentence() {
   $.get("/sentences/search", {}, function (data) {
     $("#select_sentence_result").append(data);
     $("#front").val($("#definition").data("definition"));
+
+    // TODO: factorize 
+    $("#load_audio_btn").click();
   });
   $("#choose_sentence_description").html(
     "You chose : <em id='text_part'>" + text_part + "</em>"
@@ -219,6 +221,7 @@ function add_sentences() {
       deck: $("#deck").val(),
     },
     function (data) {
+      $("#thread_status").append(running_status_element(data));
       $("#choose_sentence_result").html("");
       $("#choose_sentence_description").html("");
       $("#select_sentence_result").html("");
