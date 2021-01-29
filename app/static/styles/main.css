@@ -9,6 +9,10 @@ img {
   border: 5px solid #555;
 }
 
+input[type=text] {
+  width:500px
+}
+
 .selected {
   border-width: 5px;
   border-color: green;

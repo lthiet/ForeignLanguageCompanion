@@ -15,6 +15,9 @@ from app.services.lang import lang_code
 from app.services.audio import generate_audio
 from app.services.sentence import process_sentence, get_abstract_word
 import threading
+import glob
+from pathlib import Path
+
 threads = [threading.Thread]
 
 app = Flask(__name__,
@@ -33,9 +36,15 @@ def root():
 @app.route('/vocabulary/')
 def vocabulary():
     decks = invoke("deckNames")
+
     path = os.path.join(os.getcwd(), 'app/data/word_list')
-    word_list = [f for f in os.listdir(
-        path) if os.path.isfile(os.path.join(path, f))]
+    word_list = []
+    for wl in glob.glob(path + '/**/*.csv', recursive=True):
+        p = Path(wl)
+        pname = p.name
+        pparent = p.parent.name
+        word_list.append(Path(pparent,pname))
+
     params = {
         "decks": decks,
         "word_list": word_list,
