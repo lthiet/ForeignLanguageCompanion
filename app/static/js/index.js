@@ -13,7 +13,6 @@ function clearAll() {
   $('#entry_form datalist').each(function () {
     $(this).html('');
   });
-
 }
 
 function translate() {
