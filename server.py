@@ -1,4 +1,5 @@
 from base64 import b64decode
+import flask
 from flask_bootstrap import Bootstrap
 from flask import Flask
 from flask import render_template
@@ -43,7 +44,7 @@ def vocabulary():
         p = Path(wl)
         pname = p.name
         pparent = p.parent.name
-        word_list.append(Path(pparent,pname))
+        word_list.append(Path(pparent, pname))
 
     params = {
         "decks": decks,
@@ -57,7 +58,7 @@ def vocabulary_translate():
     word = request.args.get('word')
     target = request.args.get('target')
     translations = translate_word(word, target)
-    return render_template('vocabulary_translate_result.html', translations=translations)
+    return render_template('translate.html', translations=translations)
 
 
 @app.route('/vocabulary/search')
@@ -69,7 +70,7 @@ def vocabulary_search():
     # word = word.replace(',', '').replace(';', '')
 
     result = search(word, target, kind='vocabulary')
-    return render_template('search_result.html', kind="vocabulary", **result)
+    return render_template('search.html', kind="vocabulary", **result)
 
 
 @app.route('/image/<id>')
@@ -89,13 +90,13 @@ def vocabulary_add():
     return str(thread.ident)
 
 
-
 @app.route('/vocabulary/word_list')
 def vocabulary_word_list():
     word_list = request.args['word_list']
     words = pd.read_csv(os.path.join(
         os.getcwd(), 'app/data/word_list', word_list), header=None)[0].to_list()
-    return render_template('word_list.html', words=words)
+    is_en = Path(word_list).parent.name == 'en'
+    return render_template('word_list.html', words=words, is_en=is_en)
 
 
 @app.route('/pronunciation/')
@@ -194,7 +195,7 @@ def sentences_add():
     params.pop('images[]', None)
 
     # TODO: factorize
-    thread =  send_add_request('sentences', **params)
+    thread = send_add_request('sentences', **params)
     thread.start()
     threads.append(thread)
     return str(thread.ident)
@@ -209,6 +210,7 @@ def abstract_word():
     detail = req.get("detail")
     res = get_abstract_word(word_src, word_dst, target, detail)
     return sentences(example=res["examples"][0] if len(res["examples"]) > 0 else '', definition=res["definition"])
+
 
 @app.route('/thread_status/<ident>')
 def check_thread_status(ident):

@@ -1,9 +1,22 @@
 function clearAll() {
-  $(".form_container").html("");
+  $("#image").html("");
+  $('input[type=text]').each(function (index) {
+    $(this).val('');
+  });
+  $('select')
+    .not("#word_list")
+    .not("#deck")
+    .not("#target")
+    .each(function () {
+      $(this).html('');
+    });
+  $('#entry_form datalist').each(function () {
+    $(this).html('');
+  });
+
 }
 
 function translate() {
-  clearAll();
   $.get(
     "/vocabulary/translate", {
       word: $("#word_src").val(),
@@ -16,6 +29,9 @@ function translate() {
 }
 
 function search() {
+  console.log(
+    $("#word_dst").val()
+  );
   $.get(
     "/vocabulary/search", {
       word: $("#word_dst").val(),
@@ -148,9 +164,14 @@ function word_list() {
   );
 }
 
-function replace_word_src(event) {
+function add_from_word_list(event) {
   word = event.target.getAttribute("data-word");
-  $("#word_src").val(word);
+  is_en = event.target.getAttribute("data-is_en") == "True";
+  if (is_en)
+    $("#word_src").val(word);
+  else
+    $("#word_dst").val(word);
+
   $("#" + event.target.id).remove();
 }
 
@@ -158,7 +179,7 @@ function load_image() {
   var offset = $("#image img").length;
   $.get(
     "/image_search", {
-      word: $("#word_dst").val(),
+      word: $(".input_image").val(),
       target: $("#target").val(),
       offset: offset,
     },
@@ -171,7 +192,7 @@ function load_image() {
 function addAudio() {
   $.get(
     "/audio/add", {
-      word: $("#word_dst").val(),
+      word: $(".input_audio").val(),
       target: $("#target").val(),
     },
     function (data) {
@@ -180,54 +201,6 @@ function addAudio() {
   );
 }
 
-function displaySentence() {
-  $("#choose_sentence_result").text($("#word_dst").val());
-  $("#choose_sentence_description").html(
-    '<br> Select part of the sentence and click Select <br>     <button onclick="selectSentence()" id="select_sentence">Select</button>'
-  );
-}
-
-function selectSentence() {
-  text_part = window.getSelection().toString();
-  if (text_part == "") {
-    window.alert("You didn't choose anything");
-    return;
-  }
-
-  $.get("/sentences/search", {}, function (data) {
-    $("#select_sentence_result").append(data);
-    $("#front").val($("#definition").data("definition"));
-
-    // TODO: factorize 
-    $("#load_audio_btn").click();
-  });
-  $("#choose_sentence_description").html(
-    "You chose : <em id='text_part'>" + text_part + "</em>"
-  );
-}
-
-function add_sentences() {
-  $.get(
-    "/sentences/add/", {
-      text_full: $("#word_dst").val(),
-      recording: $("#recording").val(),
-      front: $("#front").val(),
-      text_part: $("#text_part").text(),
-      images: $(".selected")
-        .map(function () {
-          return this.src;
-        })
-        .get(),
-      deck: $("#deck").val(),
-    },
-    function (data) {
-      $("#thread_status").append(running_status_element(data));
-      $("#choose_sentence_result").html("");
-      $("#choose_sentence_description").html("");
-      $("#select_sentence_result").html("");
-    }
-  );
-}
 
 function searchAbstractWord() {
   $.get(

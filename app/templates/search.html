@@ -1,0 +1,16 @@
+<form novalidate></form>
+{% if kind == 'vocabulary' %}
+{% include "word_usage.html"%}
+<br/>
+{% endif %}
+{% include "ipa.html" %}
+<br/>
+{% include "recording.html" %}
+<br>
+<button class="btn btn-primary" id="search-submit" name="search-submit" type="button" value="Submit"
+    onclick="add_{{kind}}()">
+    Add
+</button>
+<br>
+{% include "image.html" %}
+</form>

@@ -69,3 +69,7 @@ input[type=text] {
 .running {
   background-image: linear-gradient( 143.3deg,  rgba(216,27,96,1) 33.1%, rgba(237,107,154,1) 74.9% );
 }
+
+#thread_status {
+  height: 50px;
+}

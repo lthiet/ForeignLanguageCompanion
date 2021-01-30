@@ -2,23 +2,24 @@
 <label>
     Word (in target language)
 </label>
-<input type="text" list="words" id="word_dst"/>
+<input type="text" list="words" class="input_audio input_image" id="word_dst"/>
 <datalist id="words">
+    {% if translations is defined %}
     {% for w in translations%}
     <option>{{w['word']}}</option>
     {% endfor %}
+    {% endif %}
 </datalist>
 <div id="words_desc">
-     {% for w in translations%}
+    {% if translations is defined %}
+    {% for w in translations%}
     <button data-word="{{w['word']}}" onclick="replace_word_dst(event)">{{w['word']}} / {{w['position']}} / {{w['other']}}</button><br>
     {% endfor %}
+    {% endif %}
 </div>
 <br>
  <button class="btn btn-primary" id="search-submit" name="search-submit" type="button" value="Submit"
       onclick="search()">
       Search
     </button>
-
-<button onclick="searchAbstractWord()">Abstract word</button>
-
 </form>

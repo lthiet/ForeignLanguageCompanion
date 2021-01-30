@@ -8,6 +8,11 @@
     defer
   ></script>
   <script
+    src="{{ url_for('static', filename='js/sentences.js') }}"
+    type="text/javascript"
+    defer
+  ></script>
+  <script
     src="{{ url_for('static', filename='js/paste.js') }}"
     type="text/javascript"
     defer
@@ -16,6 +21,11 @@
   <link
     rel="stylesheet"
     href="{{ url_for('static', filename='styles/main.css') }}"
+    type="text/css"
+  />
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='styles/sentences.css') }}"
     type="text/css"
   />
 </head>
@@ -39,11 +49,40 @@
   </select>
   <br />
   <label for="sentence">Sentence</label>
-  <textarea id="word_dst" type="text" value="{{example}}"></textarea>
+  <textarea class="input_audio input_image" id="input_sentence" type="text" value="{{example}}"></textarea>
+  <br />
   <button onclick="displaySentence()" id="display_sentence">
     Process sentence
   </button>
+
+  <!-- The sentence is displayed here and this is where the user should select the sentence -->
   <div id="choose_sentence_result"></div>
-  <div id="choose_sentence_description"></div>
-  <div id="select_sentence_result"></div>
+
+  <!-- Describes what to do for the user and contains the select button -->
+  <div id="choose_sentence_description">
+    Select part of the sentence and click Select
+    <button onclick="selectSentence()" id="select_sentence">Select</button>
+    <br />
+    <div id="selected_part_of_sentence"></div>
+  </div>
+
+  <!-- This part contain various input for the cards such as recordings, images, and extra field -->
+  <div id="select_sentence_result">
+    <label>Definition, base word, etc. </label><br />
+    <input type="text" id="front" /><br />
+
+    {% include 'recording.html' %}
+    <br />
+    <button
+      class="btn btn-primary"
+      id="search-submit"
+      name="search-submit"
+      type="button"
+      value="Submit"
+      onclick="add_sentences()"
+    >
+      Add
+    </button><br>
+    {% include 'image.html' %}
+  </div>
 </body>
