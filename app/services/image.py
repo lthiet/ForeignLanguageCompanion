@@ -62,7 +62,8 @@ def download_images_azure(word, target=None, offset=0, n=10):
     response.raise_for_status()
     search_results = response.json()
     paths = []
-    for i in range(n):
+    maxn = len(search_results["value"])
+    for i in range(min(n, maxn)):
         paths.append({
             "thumbnail_url": search_results["value"][i]["thumbnailUrl"],
             "content_url": search_results["value"][i]["contentUrl"],
