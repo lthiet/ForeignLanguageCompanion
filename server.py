@@ -15,6 +15,7 @@ from app.services.image import download_image, save_image
 from app.services.lang import lang_code
 from app.services.audio import generate_audio
 from app.services.sentence import process_sentence, get_abstract_word
+from app.services.nlp import lemmatize
 import threading
 import glob
 from pathlib import Path
@@ -230,3 +231,10 @@ def check_thread_status(ident):
             else:
                 return "done"
     return "not found"
+
+@app.route('/lemmatizer/')
+def lemmatizer():
+    req = request.args
+    word = req.get('word')
+    target = req.get('target')
+    return lemmatize(word,target)
