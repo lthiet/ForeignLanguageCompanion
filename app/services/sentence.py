@@ -3,9 +3,10 @@ import requests
 import json
 
 
-def process_sentence(text_full, text_part):
+def process_sentence(text_full, text_part, guess_syntax):
     i = text_full.find(text_part)
-    return text_full[:i] + '[...]' + text_full[i+len(text_part):]
+    replacement = '' if guess_syntax else '[...]'
+    return text_full[:i] + replacement + text_full[i+len(text_part):]
 
 
 def translate(text, target):

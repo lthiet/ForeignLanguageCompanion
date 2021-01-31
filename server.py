@@ -190,9 +190,17 @@ def sentences_add():
     text_full = request.args.get('text_full')
     text_part = request.args.get('text_part')
     params = dict(request.args)
-    params['text_hidden'] = process_sentence(text_full, text_part)
+    guess_syntax = params['guess_syntax'] == 'true'
+    params['twocard'] = params['twocard'] == 'true'
+    params['text_hidden'] = process_sentence(
+        text_full, text_part, guess_syntax)
     params['images'] = request.args.getlist('images[]')
     params.pop('images[]', None)
+
+    if guess_syntax:
+        params['front'] = params['text_part']
+        params['text_part'] = ''
+        params['twocard'] = False
 
     # TODO: factorize
     thread = send_add_request('sentences', **params)

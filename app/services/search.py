@@ -5,7 +5,6 @@ import json
 import os
 from pathlib import Path
 from bing_image_downloader import downloader
-from app.services.image import download_image
 from app.services.lang import code_to_name
 from app.services.audio import download_audio
 import string

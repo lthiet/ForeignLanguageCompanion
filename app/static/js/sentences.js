@@ -3,7 +3,7 @@
 
 
 function displaySentence() {
-    $("#choose_sentence_result").text($("#input_sentence").val());
+  $("#choose_sentence_result").text($("#input_sentence").val());
 }
 
 function selectSentence() {
@@ -31,6 +31,8 @@ function add_sentences() {
         })
         .get(),
       deck: $("#deck").val(),
+      twocard: $("#2card").is(":checked"),
+      guess_syntax: $("#guess_syntax").is(":checked")
     },
     function (data) {
       $("#thread_status").append(running_status_element(data));
