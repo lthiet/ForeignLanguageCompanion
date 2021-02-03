@@ -16,6 +16,13 @@ function selectSentence() {
   $("#selected_part_of_sentence").html(
     "You chose : <em id='text_part'>" + text_part + "</em>"
   );
+
+  $.get("/lemmatizer/", {
+    "word": text_part,
+    "target": $("#target").val()
+  }, function (data) {
+    $("#front").val(data)
+  })
 }
 
 function add_sentences() {

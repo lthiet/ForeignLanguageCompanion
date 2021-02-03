@@ -1,5 +1,5 @@
 function clearAll() {
-  $("#image").html("");
+  $("#image img").remove();
   $('input[type=text]').each(function (index) {
     $(this).val('');
   });
@@ -222,20 +222,16 @@ function replace_word_dst(event) {
 }
 
 function pasteWatch() {
+  console.log("test");
   const sel = "#image";
   $(sel)
     .pastableNonInputable()
     .off("pasteImage")
     .on("pasteImage", function (e, data) {
+      console.log("salut!");
       $.post("/image/upload", data.dataURL, function (res) {
         $(sel).prepend(res);
       });
-      // $("<img />")
-      //   .attr("src", data.dataURL)
-      //   .attr("onclick", "selectImage(event)")
-      //   .addClass("selected")
-      //   .appendTo(sel);
-      // console.log(data);
     });
 }
 
