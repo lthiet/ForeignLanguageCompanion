@@ -1,4 +1,4 @@
 {% for p in paths %}
-<img data-content="{{p.thumbnail_url}}" class="{% if not from_copy %}un{% endif %}selected" onclick="selectImage(event)"
+<img data-content="{{p.content_url}}" class="{% if not from_copy %}un{% endif %}selected" onclick="selectImage(event)"
     src="{{p.thumbnail_url}}">
 {% endfor %}

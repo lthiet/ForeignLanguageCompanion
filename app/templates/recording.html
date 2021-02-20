@@ -1,5 +1,10 @@
 <label>Recording</label>
-<button id="load_audio_btn" onclick="addAudio()">Add Neural Audio</button>
+<button id="load_audio_word_btn" onclick="addAudioWord()">
+  Add Audio from word
+</button>
+<button id="load_audio_example_btn" onclick="addAudioExample()">
+  Add Audio from example
+</button>
 <select onchange="playAudio()" id="recording">
   {% if recordings is defined %} {% for e in recordings%}
   <option value="/audio/{{e}}">{{e}}</option>

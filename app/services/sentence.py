@@ -1,4 +1,4 @@
-from app.services.config import cfg, get_header
+from app.services.config import cfg
 import requests
 import json
 
@@ -26,30 +26,5 @@ def translate(text, target):
     return response[0]['translations'][0]['text']
 
 
-def example_sentence(word_dst, word_src, target):
-    url = f'{cfg["translator"]["endpoint"]}/Dictionary/Examples?api-version=3.0&from=en&to={target}'
-    body = [{
-        'text': word_dst,
-        'translation': word_src
-    }]
-    response = requests.post(url, headers=get_header('translator'), json=body)
-    response = json.loads(response.content.decode())[0]
-
-    def concat_response(entry):
-        return entry["targetPrefix"] + entry['targetTerm'] + entry['targetSuffix']
-    return [concat_response(e) for e in response["examples"]]
 
 
-def get_abstract_word(word_dst, word_src, target, detail):
-    _, position, definition = tuple(detail.split(' / '))
-
-    # Step 1 : Translate definition and position
-    definition = translate(definition, target)
-    position = translate(position, target)
-
-    # Step 2 : Get example sentences
-    examples = example_sentence(word_dst, word_src, target)
-    return {
-        "definition": position + ": " + definition,
-        "examples": examples
-    }

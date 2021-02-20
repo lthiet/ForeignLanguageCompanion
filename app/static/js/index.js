@@ -38,10 +38,10 @@ function search() {
     },
     function (data) {
       $("#result_search").html(data);
-      $("#load_image_btn").click();
-      if ($("#recording option").length < 1) {
-        $("#load_audio_btn").click();
-      }
+      // $("#load_image_btn").click();
+      // if ($("#recording option").length < 1) {
+      //   $("#load_audio_btn").click();
+      // }
     }
   );
 }
@@ -75,28 +75,7 @@ function running_status_element(ident) {
 }
 
 
-function add_vocabulary() {
-  $.get(
-    "/vocabulary/add", {
-      word: $("#word_dst").val(),
-      ipa: $("#ipa").val(),
-      word_usage: $("#word_usage").val(),
-      recording: $("#recording").val(),
-      spelling: $("#spelling").is(':checked'),
-      images: $(".selected")
-        .map(function () {
-          // return this.src;
-          return this.dataset.content;
-        })
-        .get(),
-      deck: $("#deck").val(),
-    },
-    function (data) {
-      $("#thread_status").append(running_status_element(data));
-      clearAll();
-    }
-  );
-}
+
 
 function add_pronunciation() {
   $.get(
@@ -107,7 +86,7 @@ function add_pronunciation() {
       recording: $("#recording").val(),
       images: $(".selected")
         .map(function () {
-          return this.src;
+          return this.dataset.content;
         })
         .get(),
       deck: $("#deck").val(),
@@ -146,7 +125,7 @@ function pronunciate() {
     function (data) {
       $("#result_search").html(data);
       if ($("#recording option").length < 1) {
-        $("#load_audio_btn").click();
+        $("#load_audio_word_btn").click();
       }
     }
   );
@@ -174,7 +153,7 @@ function add_from_word_list(event) {
   $("#" + event.target.id).remove();
 }
 
-function load_image() {
+function load_image_word() {
   var offset = $("#image img").length;
   $.get(
     "/image_search", {
@@ -188,10 +167,37 @@ function load_image() {
   );
 }
 
-function addAudio() {
+function load_image_example() {
+  var offset = $("#image img").length;
+  $.get(
+    "/image_search", {
+      word: $("#example").attr("data-inputimage"),
+      target: "en",
+      offset: offset,
+    },
+    function (data) {
+      $("#image").append(data);
+    }
+  );
+}
+
+
+function addAudioWord() {
   $.get(
     "/audio/add", {
       word: $(".input_audio").val(),
+      target: $("#target").val(),
+    },
+    function (data) {
+      $("#recording").append(data);
+    }
+  );
+}
+
+function addAudioExample() {
+  $.get(
+    "/audio/add", {
+      word: $("#example").val(),
       target: $("#target").val(),
     },
     function (data) {
@@ -222,7 +228,6 @@ function replace_word_dst(event) {
 }
 
 function pasteWatch() {
-  console.log("test");
   const sel = "#image";
   $(sel)
     .pastableNonInputable()

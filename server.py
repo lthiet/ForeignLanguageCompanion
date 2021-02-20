@@ -5,16 +5,17 @@ from flask import Flask
 from flask import render_template
 from flask import request
 from flask import send_file
+from flask import jsonify
 import os
 import pandas as pd
-from app.services.translate import translate_word
+from app.services.translate import example_sentence, translate_word
 from app.services.search import search
 from app.services.add import send_add_request
 from app.services.anki import invoke
 from app.services.image import download_image, save_image
 from app.services.lang import lang_code
 from app.services.audio import generate_audio
-from app.services.sentence import process_sentence, get_abstract_word
+from app.services.sentence import process_sentence
 from app.services.nlp import lemmatize
 import threading
 import glob
@@ -210,15 +211,15 @@ def sentences_add():
     return str(thread.ident)
 
 
-@app.route('/vocabulary/abstract_word/')
-def abstract_word():
-    req = request.args
-    word_src = req.get("word_src")
-    word_dst = req.get("word_dst")
-    target = req.get("target")
-    detail = req.get("detail")
-    res = get_abstract_word(word_src, word_dst, target, detail)
-    return sentences(example=res["examples"][0] if len(res["examples"]) > 0 else '', definition=res["definition"])
+# @app.route('/vocabulary/abstract_word/')
+# def abstract_word():
+#     req = request.args
+#     word_src = req.get("word_src")
+#     word_dst = req.get("word_dst")
+#     target = req.get("target")
+#     detail = req.get("detail")
+#     res = get_abstract_word(word_src, word_dst, target, detail)
+#     return sentences(example=res["examples"][0] if len(res["examples"]) > 0 else '', definition=res["definition"])
 
 
 @app.route('/thread_status/<ident>')
@@ -232,9 +233,19 @@ def check_thread_status(ident):
                 return "done"
     return "not found"
 
+
 @app.route('/lemmatizer/')
 def lemmatizer():
     req = request.args
     word = req.get('word')
     target = req.get('target')
-    return lemmatize(word,target)
+    return lemmatize(word, target)
+
+
+@app.route('/vocabulary/examples')
+def vocabulary_examples():
+    req = request.args
+    word_src = req.get('word_src')
+    word_dst = req.get('word_dst')
+    target = req.get('target')
+    return jsonify(example_sentence(word_src, word_dst, target))

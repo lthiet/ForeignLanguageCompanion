@@ -5,11 +5,17 @@
 {% endif %}
 {% include "ipa.html" %}
 <br/>
+{% include "dict_examples.html" %}
+<br/>
 {% include "recording.html" %}
 <br>
 <button class="btn btn-primary" id="search-submit" name="search-submit" type="button" value="Submit"
-    onclick="add_{{kind}}()">
-    Add
+    onclick="add_simple_vocabulary()">
+    Add as simple vocabulary
+</button>
+<button class="btn btn-primary" id="search-submit" name="search-submit" type="button" value="Submit"
+    onclick="add_abstract_vocabulary()">
+    Add as abstract vocabulary
 </button>
 <br>
 {% include "image.html" %}

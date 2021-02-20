@@ -1,9 +1,10 @@
 import os
+from flask.globals import request
 import requests
 import json
 from bs4 import BeautifulSoup
 import string
-from app.services.config import cfg
+from app.services.config import cfg, get_header
 from app.services.lang import code_to_name
 import re
 
@@ -118,8 +119,45 @@ def translate_word(word, target, specification=None):
         return translate_cambridge(word, target_name='portuguese')
     elif target == 'ms':
         return translate_cambridge(word, target_name='malaysian')
-    elif target in ['ja', 'ko', 'ar', 'es', 'fr', 'id', 'it', 'pl', 'ca', 'cs', 'da', 'nb', 'ru', 'th', 'vi','de']:
+    elif target in ['ja', 'ko', 'ar', 'es', 'fr', 'id', 'it', 'pl', 'ca', 'cs', 'da', 'nb', 'ru', 'th', 'vi', 'de']:
         return translate_cambridge(word, target)
     # Last resort, try with Microsoft Translator API
     else:
         return translate_azure(word, target)
+
+
+def example_sentence(word_src, word_dst, target):
+    url = f'https://api.cognitive.microsofttranslator.com/dictionary/lookup?api-version=3.0&from={target}&to=en'
+    body = [{'Text': word_dst}]
+    response = requests.post(url, headers=get_header('translator'), json=body)
+    response_json = json.loads(response.content.decode())[0]
+
+    # the translation from microsoft. need this to use with the dict example. could not match other dictionaries
+    microsoft_word_srcs = [e['normalizedTarget']
+                           for e in response_json['translations']]
+
+    url = f'{cfg["translator"]["endpoint"]}/Dictionary/Examples?api-version=3.0&from=en&to={target}'
+
+    chosen_src = microsoft_word_srcs[0]
+    for src in microsoft_word_srcs:
+        if src == word_src:
+            chosen_src = word_src
+
+    body = [{
+        'Text': chosen_src,
+        'Translation': word_dst
+    }]
+    response = requests.post(url, headers=get_header('translator'), json=body)
+    # NOTE: this [0] here is not temporary, doesn't need to be changed
+    response = json.loads(response.content.decode())[0]
+
+    def concat_response(entry, source=False):
+        pre = "target"
+        if source:
+            pre = "source"
+        return entry[f"{pre}Prefix"] + entry[f'{pre}Term'] + entry[f'{pre}Suffix']
+
+    return [{
+        "src_example": concat_response(e, source=True),
+        "dst_example": concat_response(e)
+    } for e in response['examples']]
