@@ -225,6 +225,9 @@ function searchAbstractWord() {
 
 function replace_word_dst(event) {
   $("#word_dst").val(event.target.getAttribute("data-word"));
+
+  // TODO: put this in another function
+  $("#definition").attr('data-english', event.target.getAttribute("data-definition"));
 }
 
 function pasteWatch() {
@@ -233,7 +236,6 @@ function pasteWatch() {
     .pastableNonInputable()
     .off("pasteImage")
     .on("pasteImage", function (e, data) {
-      console.log("salut!");
       $.post("/image/upload", data.dataURL, function (res) {
         $(sel).prepend(res);
       });

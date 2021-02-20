@@ -26,16 +26,16 @@ function add_abstract_vocabulary() {
     "/sentences/add/", {
       text_full: $("#example").val(),
       recording: $("#recording").val(),
-      text_part: $("#word_dst").text(),
+      text_part: $("#word_dst").val(),
       images: $(".selected")
         .map(function () {
           return this.dataset.content;
         })
         .get(),
       deck: $("#deck").val(),
+      front: $("#definition").val(),
 
       // TODO: this
-      front: '',
       twocard: true,
       guess_syntax: false
     },
@@ -62,9 +62,19 @@ function addExamples() {
           .click(function () {
             $("#example")
               .val($(this).text())
-              .attr("data-inputimage", val.src_example)
+              .attr("data-inputimage", val.src_example);
+            $.get("/translate/", {
+              "text": $("#definition").attr('data-english'),
+              "src": "en",
+              "dst": $("#target").val()
+            }, function (data) {
+              $("#definition")
+                .val(data)
+            })
           })
-        $(loc).append($button)
+        $(loc).append($button);
+        $(loc).append($("<br/>"));
+
       })
     }
   );

@@ -1,9 +1,12 @@
 import os
 from flask.globals import request
+from flask.wrappers import Response
 import requests
 import json
 from bs4 import BeautifulSoup
 import string
+
+from werkzeug.datastructures import Headers
 from app.services.config import cfg, get_header
 from app.services.lang import code_to_name
 import re
@@ -161,3 +164,21 @@ def example_sentence(word_src, word_dst, target):
         "src_example": concat_response(e, source=True),
         "dst_example": concat_response(e)
     } for e in response['examples']]
+
+
+def make_translation(text, src, dst):
+    if text == '' or text is None:
+        return ''
+
+    url = f'{cfg["translator"]["endpoint"]}/translate'
+    params = {
+        'api-version': '3.0',
+        'from': src,
+        'to': [dst]
+    }
+
+    body = [{'text': text}]
+    request = requests.post(
+        url, params=params, headers=get_header('translator'), json=body)
+    response = request.json()
+    return response[0]['translations'][0]["text"]

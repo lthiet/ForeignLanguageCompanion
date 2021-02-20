@@ -8,7 +8,7 @@ from flask import send_file
 from flask import jsonify
 import os
 import pandas as pd
-from app.services.translate import example_sentence, translate_word
+from app.services.translate import example_sentence, translate_word, make_translation
 from app.services.search import search
 from app.services.add import send_add_request
 from app.services.anki import invoke
@@ -249,3 +249,13 @@ def vocabulary_examples():
     word_dst = req.get('word_dst')
     target = req.get('target')
     return jsonify(example_sentence(word_src, word_dst, target))
+
+
+@app.route('/translate/')
+def translate():
+    req = request.args
+    text = req.get('text')
+    print(text)
+    src = req.get('src')
+    dst = req.get('dst')
+    return make_translation(text, src, dst)
