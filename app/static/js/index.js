@@ -1,5 +1,7 @@
 function clearAll() {
   $("#image img").remove();
+  $(".buttons_div").html('');
+  $("textarea").val('');
   $('input[type=text]').each(function (index) {
     $(this).val('');
   });

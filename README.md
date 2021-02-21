@@ -100,7 +100,6 @@ You will need the following :
 - [AnkiConnect](https://ankiweb.net/shared/info/2055492159)
 - [Python](https://docs.conda.io/en/latest/miniconda.html)
 - [Fluent Forever Model Deck](http://fluent-forever.com/downloads/Model-Deck-May-2014.apkg.zip) 
-- [Some motivation](https://cdn.statically.io/img/nextshark.com/wp-content/uploads/2017/12/Never-Give-Up.png?quality=80&f=auto) 
 
 You will find tutorial on how to install each of these in their respective documentation.
 Once you have gathered all of the above, you will need the dependencies : 

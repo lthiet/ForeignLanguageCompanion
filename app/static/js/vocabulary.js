@@ -56,12 +56,13 @@ function addExamples() {
       var loc = "#examples_result"
       $(loc).html('');
       $.each(data, function (i, val) {
-        console.log(val);
         var $button = $("<button>")
-          .html(val.dst_example)
+          .html(val.dst_example + '/' + val.src_example)
+          .attr("data-dst", val.dst_example)
+          .attr("data-src", val.src_example)
           .click(function () {
             $("#example")
-              .val($(this).text())
+              .val($(this).attr("data-dst"))
               .attr("data-inputimage", val.src_example);
             $.get("/translate/", {
               "text": $("#definition").attr('data-english'),
