@@ -11,7 +11,8 @@ speakers = json.loads(requests.get("https://westeurope.tts.speech.microsoft.com/
 
 mapping_of_speakers = collections.defaultdict(list)
 for e in speakers:
-    if e["VoiceType"] == "Neural":
+    print(e)
+    if e["VoiceType"] == "Neural" and e["Gender"] == "Female": # for some reason male voices are broken
         mapping_of_speakers[e["Locale"][:2]].append({
             "name": e["ShortName"],
             "gender": e["Gender"],

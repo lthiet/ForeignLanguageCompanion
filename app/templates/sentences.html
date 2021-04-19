@@ -49,19 +49,17 @@
   </select>
   <br />
   <label for="sentence">Sentence</label>
-  <textarea
-    class="input_audio input_image"
-    id="input_sentence"
-    type="text"
-    value="{{example}}"
-  ></textarea>
+  <textarea id="input_sentence" type="text" value="{{example}}"></textarea>
   <br />
   <button onclick="displaySentence()" id="display_sentence">
     Process sentence
   </button>
 
   <!-- The sentence is displayed here and this is where the user should select the sentence -->
-  <div id="choose_sentence_result"></div>
+  <div
+    class="input_audio input_image resetable"
+    id="choose_sentence_result"
+  ></div>
 
   <!-- Describes what to do for the user and contains the select button -->
   <div id="choose_sentence_description">

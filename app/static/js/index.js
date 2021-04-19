@@ -1,6 +1,6 @@
 function clearAll() {
   $("#image img").remove();
-  $(".buttons_div").html('');
+  $(".resetable").html('');
   $("textarea").val('');
   $('input[type=text]').each(function (index) {
     $(this).val('');
@@ -40,10 +40,10 @@ function search() {
     },
     function (data) {
       $("#result_search").html(data);
-      // $("#load_image_btn").click();
-      // if ($("#recording option").length < 1) {
-      //   $("#load_audio_btn").click();
-      // }
+      $("#load_image_word_btn").click();
+      if ($("#recording option").length < 1) {
+        $("#load_audio_word_btn").click();
+      }
     }
   );
 }
@@ -157,9 +157,12 @@ function add_from_word_list(event) {
 
 function load_image_word() {
   var offset = $("#image img").length;
+  text = $(".input_image").val()
+  if (text == '')
+    text = $(".input_image").html();
   $.get(
     "/image_search", {
-      word: $(".input_image").val(),
+      word: text,
       target: $("#target").val(),
       offset: offset,
     },
@@ -185,9 +188,12 @@ function load_image_example() {
 
 
 function addAudioWord() {
+  text = $(".input_audio").val()
+  if (text == '')
+    text = $(".input_audio").html();
   $.get(
     "/audio/add", {
-      word: $(".input_audio").val(),
+      word: text,
       target: $("#target").val(),
     },
     function (data) {

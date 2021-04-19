@@ -49,3 +49,4 @@ def search(word, target, kind='vocabulary'):
                                  for e in result["definitions"]]
 
     return answer
+

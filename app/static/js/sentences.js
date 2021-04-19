@@ -3,7 +3,16 @@
 
 
 function displaySentence() {
-  $("#choose_sentence_result").text($("#input_sentence").val());
+  text = $("#input_sentence").val()
+
+  // Remove breaklines
+  text = text.replace(/(\r\n|\n|\r)/gm, " ");
+
+  // TURKISH
+  // Replace s with cedille
+  text = text.replace('ș', 'ş');
+
+  $("#choose_sentence_result").text(text);
 }
 
 function selectSentence() {

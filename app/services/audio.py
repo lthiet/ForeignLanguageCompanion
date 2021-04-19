@@ -13,7 +13,6 @@ from pathlib import Path
 
 
 def create_ssml(text, target):
-
     # TODO : can specify IPA here
     ssml = f"""<?xml version='1.0' encoding='UTF-8'?>
     <speak xmlns="https://www.w3.org/2001/10/synthesis" version="1.0" xml:lang="{target}">
@@ -22,6 +21,7 @@ def create_ssml(text, target):
         </voice>
     </speak>
     """
+    print(ssml)
     return ssml
 
 

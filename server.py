@@ -21,6 +21,8 @@ import threading
 import glob
 from pathlib import Path
 
+
+
 threads = [threading.Thread]
 
 app = Flask(__name__,
@@ -255,7 +257,6 @@ def vocabulary_examples():
 def translate():
     req = request.args
     text = req.get('text')
-    print(text)
     src = req.get('src')
     dst = req.get('dst')
     return make_translation(text, src, dst)

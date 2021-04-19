@@ -10,7 +10,7 @@
     {% endfor %}
     {% endif %}
 </datalist>
-<div id="words_desc">
+<div class="resetable" id="words_desc">
     {% if translations is defined %}
     {% for w in translations%}
     <button data-definition ="{{w['other']}}" data-word="{{w['word']}}" onclick="replace_word_dst(event)">{{w['word']}} / {{w['position']}} / {{w['other']}}</button><br>
