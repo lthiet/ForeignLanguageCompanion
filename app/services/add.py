@@ -113,7 +113,7 @@ def send_add_request(kind, **params):
                     "Front (Definitions, base word, etc.)": params["front"],
                     "Back (a single word/phrase, no context)": params["text_part"],
                     "- The full sentence (no words blanked out)": params["text_full"],
-                    "• Make 2 cards? (\"y\" = yes, blank = no)": "y" if params["twocard"] else ''
+                    '• Make 2 cards? (y = yes, blank = no)': "y" if params["twocard"] else ''
                 },
                 "options": {
                     "allowDuplicate": True,
@@ -133,18 +133,3 @@ def send_add_request(kind, **params):
         }
 
     return Thread(target=invoke, args=("addNote",), kwargs=anki)
-
-    note_id = invoke("addNote", **anki)
-
-    # Delete file used
-    path = os.path.join(os.getcwd(), 'app/data')
-
-    def delete(x):
-        if os.path.exists(os.path.join(path, x)):
-            shutil.rmtree(os.path.join(path, x))
-
-    pathaudio = os.path.join(path, 'audio')
-    pathimage = os.path.join(path, 'images')
-    delete(pathaudio)
-    delete(pathimage)
-    return str(note_id)
